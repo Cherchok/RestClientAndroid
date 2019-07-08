@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">RestClientTest</string>
+    <string name="add_edittext">Add edittext</string>
+</resources>
