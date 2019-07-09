@@ -29,20 +29,23 @@ public class LoginActivity extends AppCompatActivity {
 
         final EditText etUsername = findViewById(R.id.etUsername);
         final EditText etPassword = findViewById(R.id.etPassword);
+        final EditText lang = findViewById(R.id.language);
         final Button bLogin = findViewById(R.id.bSignIn);
         final RequestQueue loginQueue = Volley.newRequestQueue(this);
 
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String username = etUsername.getText().toString();
+                final String username = etUsername.getText().toString().toUpperCase().trim();
                 final String password = etPassword.getText().toString();
+                final String language = lang.getText().toString().toUpperCase().trim();
                 final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
                 intent.putExtra("userName", username);
                 intent.putExtra("password", password);
+                intent.putExtra("language", language);
 
-                String  urlAuth = "http://192.168.0.38:8080/rest/rest/wmap" + "/" +"syst" + "/" + username + "/" + password;
+                String urlAuth = "http://192.168.0.38:8080/rest/rest/wmap" + "/" + "syst" + "/" + username + "/" + password;
 
                 // GET запрос к серверу для авторизации
                 final JsonArrayRequest jsonArrayRequestLogin = new JsonArrayRequest(

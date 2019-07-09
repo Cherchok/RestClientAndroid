@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     // параметры для запроса в SAP
     String table = "T001";
     String fieldsQuan = "1";
-    String language = "R";
+    String language; // = R;
     String where = " ";
     String order = " ";
     String group = " ";
@@ -62,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         login = intent.getStringExtra("userName");
         password = intent.getStringExtra("password");
+        if (language == null) {
+            language = intent.getStringExtra("language");
+        }
+
 
         //  TODO будет вызыватся до метода createSys() метод отрисовки окна идентификации
 
