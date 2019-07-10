@@ -25,7 +25,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".ParamsActivity"></activity>
+        <activity android:name=".ParamsActivity"/>
+        <activity android:name=".ModulesActivity"/>
+        <activity android:name=".QRscanActivity"/>
     </application>
 
 </manifest>

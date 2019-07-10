@@ -2,4 +2,10 @@
     <string name="app_name">RestClientTest</string>
     <string name="add_edittext">Add edittext</string>
     <string name="result_text_default">Please focus camera to QR code</string>
+    <string name="select_module">Select module:</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="ln">LN</string>
+    <string name="lng">lng</string>
+    <string name="sign_in">Sign In</string>
 </resources>

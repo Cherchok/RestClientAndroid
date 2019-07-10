@@ -20,7 +20,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
-public class QRscan extends AppCompatActivity {
+public class QRscanActivity extends AppCompatActivity {
     SurfaceView cameraPreview;
     TextView textResult;
     BarcodeDetector barcodeDetector;
@@ -70,7 +70,7 @@ public class QRscan extends AppCompatActivity {
             public void surfaceCreated(SurfaceHolder holder) {
                 if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     // Request permission
-                    ActivityCompat.requestPermissions(QRscan.this,
+                    ActivityCompat.requestPermissions(QRscanActivity.this,
                             new String[]{Manifest.permission.CAMERA},
                             RequestCamerPermissinID);
                     return;
@@ -109,7 +109,7 @@ public class QRscan extends AppCompatActivity {
                         public void run() {
                             //Create vibrate
                             Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                            vibrator.vibrate(1000);
+                            vibrator.vibrate(300);
                             textResult.setText(qrcodes.valueAt(0).displayValue);
                         }
                     });

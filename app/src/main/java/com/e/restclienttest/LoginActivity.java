@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
                 final String username = etUsername.getText().toString().toUpperCase().trim();
                 final String password = etPassword.getText().toString();
                 final String language = lang.getText().toString().toUpperCase().trim();
-                final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                final Intent intent = new Intent(LoginActivity.this, ModulesActivity.class);
 
                 intent.putExtra("userName", username);
                 intent.putExtra("password", password);

@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     // параметры для запроса в SAP
     String table = "T001";
     String fieldsQuan = "1";
-    String language; // = R;
+    String language;
     String where = " ";
     String order = " ";
     String group = " ";
