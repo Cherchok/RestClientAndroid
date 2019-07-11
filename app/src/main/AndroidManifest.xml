@@ -18,16 +18,18 @@
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
 
-        <activity android:name=".LoginActivity">
+        <activity android:name=".ConnectionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
+        <activity android:name=".LoginActivity"/>
         <activity android:name=".ParamsActivity"/>
         <activity android:name=".ModulesActivity"/>
         <activity android:name=".QRscanActivity"/>
+
     </application>
 
 </manifest>

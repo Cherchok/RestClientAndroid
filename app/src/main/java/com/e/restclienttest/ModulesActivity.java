@@ -12,21 +12,50 @@ import android.widget.TextView;
 
 public class ModulesActivity extends AppCompatActivity {
 
-    String[] modules = new String[]{"_________________", "A", "Z"};
+    // список доступных модулей
+    String[] modules; // = new String[]{"_________________", "A", "Z"};
+
+    // тест для выбора модуля
     TextView selection;
+
+    // заполняем список модулей имеющимися на сервере
+    public String[] fillModules() {
+        Intent intentLogin = getIntent();
+        String[] modules = new String[intentLogin.getExtras().keySet().size() - 2];
+        modules[0] = "_________________";
+        int id = 1;
+        for (String name : intentLogin.getExtras().keySet()) {
+            boolean flag = false;
+            if (name.equals("userName")) {
+                flag = true;
+            }
+            if (name.equals("password")) {
+                flag = true;
+            }
+            if (name.equals("language")) {
+                flag = true;
+            }
+            if (!flag) {
+                modules[id] = name;
+                id++;
+            }
+        }
+        return modules;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_module);
-
+        modules = fillModules();
         Spinner spinner = findViewById(R.id.modules);
         selection = findViewById(R.id.selection);
 
-        Intent intent = getIntent();
-        final String login = intent.getStringExtra("userName");
-        final String password = intent.getStringExtra("password");
-        final String language = intent.getStringExtra("language");
+        // передаем введенные  логин, пароль и язык
+        Intent intentLogin = getIntent();
+        final String login = intentLogin.getStringExtra("userName");
+        final String password = intentLogin.getStringExtra("password");
+        final String language = intentLogin.getStringExtra("language");
 
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, modules);
@@ -46,8 +75,9 @@ public class ModulesActivity extends AppCompatActivity {
                 String item = (String) parent.getItemAtPosition(position);
 //                selection.setText("Select module :");
 
+                // осуществляем вход в необходимый модуль в соответствии с выбранным по имени
                 switch (item) {
-                    case "Z":
+                    case "QRread": // A
                         final Intent intentQR = new Intent(ModulesActivity.this, QRscanActivity.class);
 
                         intentQR.putExtra("userName", login);
@@ -57,7 +87,7 @@ public class ModulesActivity extends AppCompatActivity {
                         ModulesActivity.this.startActivity(intentQR);
                         break;
 
-                    case "A":
+                    case "ZTABLEREAD": // Z
                         final Intent intentTab = new Intent(ModulesActivity.this, MainActivity.class);
 
                         intentTab.putExtra("userName", login);

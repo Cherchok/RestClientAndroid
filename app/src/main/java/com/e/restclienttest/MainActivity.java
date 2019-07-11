@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     // список запросов
     private LinkedHashMap<String, DataSet> dataSetList = new LinkedHashMap<>();
 
+
     // параметры для запроса в SAP
     String table = "T001";
     String fieldsQuan = "1";
@@ -59,11 +60,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // передаем введенные данные через LoginActivity.class
-        Intent intent = getIntent();
-        login = intent.getStringExtra("userName");
-        password = intent.getStringExtra("password");
+        Intent intentMain = getIntent();
+        login = intentMain.getStringExtra("userName");
+        password = intentMain.getStringExtra("password");
         if (language == null) {
-            language = intent.getStringExtra("language");
+            language = intentMain.getStringExtra("language");
         }
 
 

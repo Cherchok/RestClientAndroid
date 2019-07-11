@@ -39,11 +39,17 @@ public class LoginActivity extends AppCompatActivity {
                 final String username = etUsername.getText().toString().toUpperCase().trim();
                 final String password = etPassword.getText().toString();
                 final String language = lang.getText().toString().toUpperCase().trim();
-                final Intent intent = new Intent(LoginActivity.this, ModulesActivity.class);
+                final Intent intentLogin = new Intent(LoginActivity.this, ModulesActivity.class);
 
-                intent.putExtra("userName", username);
-                intent.putExtra("password", password);
-                intent.putExtra("language", language);
+                intentLogin.putExtra("userName", username);
+                intentLogin.putExtra("password", password);
+                intentLogin.putExtra("language", language);
+
+                Intent intentConnection = getIntent();
+                for (String name : intentConnection.getExtras().keySet()) {
+                    String value = intentConnection.getStringExtra(name);
+                    intentLogin.putExtra(name, value);
+                }
 
                 String urlAuth = "http://192.168.0.38:8080/rest/rest/wmap" + "/" + "syst" + "/" + username + "/" + password;
 
@@ -55,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                         new Response.Listener<JSONArray>() {
                             @Override
                             public void onResponse(JSONArray response) {
-                                LoginActivity.this.startActivity(intent);
+                                LoginActivity.this.startActivity(intentLogin);
                             }
                         },
                         new Response.ErrorListener() {
