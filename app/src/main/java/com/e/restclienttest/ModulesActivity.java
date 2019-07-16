@@ -72,7 +72,6 @@ public class ModulesActivity extends AppCompatActivity {
 
                 // Получаем выбранный объект
                 String item = (String) parent.getItemAtPosition(position);
-//                selection.setText("Select module :");
 
                 // осуществляем вход в необходимый модуль в соответствии с выбранным по имени
                 switch (item) {
@@ -104,5 +103,4 @@ public class ModulesActivity extends AppCompatActivity {
         };
         spinner.setOnItemSelectedListener(itemSelectedListener);
     }
-
 }
