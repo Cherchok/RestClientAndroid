@@ -20,7 +20,7 @@ public class ModulesActivity extends AppCompatActivity {
     // тест для выбора модуля
     TextView selection;
 
-    // заполняем список модулей имеющимися на сервере
+    // заполняем список модулей доступных в SAP системе
     public String[] getModulesNames() {
         Intent intentLogin = getIntent();
         ArrayList<String> modulesList = new ArrayList<>();
