@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class ModulesActivity extends AppCompatActivity {
 
     // список доступных модулей
@@ -19,27 +21,24 @@ public class ModulesActivity extends AppCompatActivity {
     TextView selection;
 
     // заполняем список модулей имеющимися на сервере
-    public String[] fillModules() {
+    public String[] getModulesNames() {
         Intent intentLogin = getIntent();
-        String[] modules = new String[intentLogin.getExtras().keySet().size() - 2];
-        modules[0] = "_________________";
-        int id = 1;
+        ArrayList<String> modulesList = new ArrayList<>();
+        String[] modules;
         for (String name : intentLogin.getExtras().keySet()) {
-            boolean flag = false;
-            if (name.equals("userName")) {
-                flag = true;
-            }
-            if (name.equals("password")) {
-                flag = true;
-            }
-            if (name.equals("language")) {
-                flag = true;
-            }
-            if (!flag) {
-                modules[id] = name;
-                id++;
+            if (name.equals("REPI2")) {
+                modulesList = intentLogin.getStringArrayListExtra(name);
             }
         }
+        modules = new String[modulesList.size() - 1];
+        int id = 0;
+        for (int i = 0; i < modulesList.size(); i++) {
+            if (!(i == 1)) {
+                modules[id] = modulesList.get(i).trim();
+                id++;
+            } else selection.setText(modulesList.get(i).trim());
+        }
+
         return modules;
     }
 
@@ -47,9 +46,9 @@ public class ModulesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_module);
-        modules = fillModules();
         Spinner spinner = findViewById(R.id.systems);
         selection = findViewById(R.id.selection_sys);
+        modules = getModulesNames();
 
         // передаем введенные  логин, пароль и язык
         Intent intentLogin = getIntent();
@@ -77,7 +76,7 @@ public class ModulesActivity extends AppCompatActivity {
 
                 // осуществляем вход в необходимый модуль в соответствии с выбранным по имени
                 switch (item) {
-                    case "QRread": // A
+                    case "QR коды": // A
                         final Intent intentQR = new Intent(ModulesActivity.this, QRscanActivity.class);
 
                         intentQR.putExtra("userName", login);
@@ -87,7 +86,7 @@ public class ModulesActivity extends AppCompatActivity {
                         ModulesActivity.this.startActivity(intentQR);
                         break;
 
-                    case "ZTABLEREAD": // Z
+                    case "Просмотр таблиц": // Z
                         final Intent intentTab = new Intent(ModulesActivity.this, MainActivity.class);
 
                         intentTab.putExtra("userName", login);

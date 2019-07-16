@@ -15,8 +15,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
+
+import java.util.ArrayList;
+
 
 
 // класс проверки логина и пароля перед входом
@@ -61,6 +66,14 @@ public class LoginActivity extends AppCompatActivity {
                         new Response.Listener<JSONArray>() {
                             @Override
                             public void onResponse(JSONArray response) {
+                                ArrayList<Mapa> sapDataList = (new Gson()).fromJson(response.toString(),
+                                        new TypeToken<ArrayList<Mapa>>() {
+                                        }.getType());
+                                for (int i = 0; i < sapDataList.size(); i++) {
+                                    if(sapDataList.get(i).getName().equals("REPI2")){
+                                        intentLogin.putExtra(sapDataList.get(i).getName(), sapDataList.get(i).getValues());
+                                    }
+                                }
                                 LoginActivity.this.startActivity(intentLogin);
                             }
                         },
