@@ -9,4 +9,5 @@
     <string name="lng">lng</string>
     <string name="sign_in">Sign In</string>
     <string name="get_connection">Get connection…</string>
+    <string name="select_system">select_system :</string>
 </resources>

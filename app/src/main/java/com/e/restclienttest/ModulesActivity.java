@@ -13,7 +13,7 @@ import android.widget.TextView;
 public class ModulesActivity extends AppCompatActivity {
 
     // список доступных модулей
-    String[] modules; // = new String[]{"_________________", "A", "Z"};
+    String[] modules;
 
     // тест для выбора модуля
     TextView selection;
@@ -48,8 +48,8 @@ public class ModulesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_module);
         modules = fillModules();
-        Spinner spinner = findViewById(R.id.modules);
-        selection = findViewById(R.id.selection);
+        Spinner spinner = findViewById(R.id.systems);
+        selection = findViewById(R.id.selection_sys);
 
         // передаем введенные  логин, пароль и язык
         Intent intentLogin = getIntent();

@@ -45,9 +45,9 @@ public class LoginActivity extends AppCompatActivity {
                 intentLogin.putExtra("password", password);
                 intentLogin.putExtra("language", language);
 
-                Intent intentConnection = getIntent();
-                for (String name : intentConnection.getExtras().keySet()) {
-                    String value = intentConnection.getStringExtra(name);
+                Intent intentSystems = getIntent();
+                for (String name : intentSystems.getExtras().keySet()) {
+                    String value = intentSystems.getStringExtra(name);
                     intentLogin.putExtra(name, value);
                 }
 
