@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     String url;
 
     // параметры клиента
-    String urlClient = "clientUrl";
+    String systemAddress;
     String login;
     String password;
     String number = "0";
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         if (language == null) {
             language = intentMain.getStringExtra("language");
         }
+        systemAddress = intentMain.getStringExtra("systemAddress");
 
 
         //  TODO будет вызыватся до метода createSys() метод отрисовки окна идентификации
@@ -75,14 +76,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // кидает запрос серверу и получает ответ заполненный метод который заполняется данными из ответа
-    public void getConnection(final String urlClient, final String login, final String password, final String number,
+    public void getConnection(final String systemAddress, final String login, final String password, final String number,
                               final String table, final String fieldsQuan, final String language, final String where,
                               final String order, final String group, final String fieldNames) {
 
 
         // составляем url с параметрами идентификации(применим после настройки сервера)
         StringBuilder urlSB = new StringBuilder();
-        urlSB.append("http://192.168.0.38:8080/rest/rest/wmap" + "/").append(urlClient).append("/")
+        urlSB.append("http://192.168.0.38:8080/rest/rest/wmap" + "/").append(systemAddress).append("/")
                 .append(login).append("/").append(password).append("/").append(number).append("/").append(table);
 
         if (!fieldsQuan.equals(" ")) {
@@ -148,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
     // создает клиента
     public void createSys() {
-        createDataSet(urlClient, login, password, number, table, fieldsQuan, language, where, order, group, fieldNames);
+        createDataSet(systemAddress, login, password, number, table, fieldsQuan, language, where, order, group, fieldNames);
     }
 
 

@@ -52,8 +52,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 Intent intentSystems = getIntent();
                 for (String name : intentSystems.getExtras().keySet()) {
-                    String value = intentSystems.getStringExtra(name);
-                    intentLogin.putExtra(name, value);
+                    ArrayList<String> value = intentSystems.getStringArrayListExtra(name);
+                    intentLogin.putExtra("systemAddress", value);
                 }
 
                 String urlAuth = "http://192.168.0.38:8080/rest/rest/wmap" + "/" + "syst" + "/" + username + "/" + password;

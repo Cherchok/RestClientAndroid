@@ -55,6 +55,7 @@ public class ModulesActivity extends AppCompatActivity {
         final String login = intentLogin.getStringExtra("userName");
         final String password = intentLogin.getStringExtra("password");
         final String language = intentLogin.getStringExtra("language");
+        final String systemAddress = intentLogin.getStringArrayListExtra("systemAddress").get(0);
 
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, modules);
@@ -82,6 +83,7 @@ public class ModulesActivity extends AppCompatActivity {
                         intentQR.putExtra("password", password);
                         intentQR.putExtra("language", language);
                         intentQR.putExtra("module", item);
+                        intentQR.putExtra("systemAddress", systemAddress);
                         ModulesActivity.this.startActivity(intentQR);
                         break;
 
@@ -92,6 +94,7 @@ public class ModulesActivity extends AppCompatActivity {
                         intentTab.putExtra("password", password);
                         intentTab.putExtra("language", language);
                         intentTab.putExtra("module", item);
+                        intentTab.putExtra("systemAddress", systemAddress);
                         ModulesActivity.this.startActivity(intentTab);
                         break;
                 }

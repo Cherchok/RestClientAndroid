@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class SystemsActivity extends AppCompatActivity {
@@ -19,7 +20,7 @@ public class SystemsActivity extends AppCompatActivity {
     String[] systemsNames;
 
     // список всех систем
-    LinkedHashMap<String, String> systlist;
+    LinkedHashMap<String, ArrayList<String>> systlist;
 
     // текст для выбора модуля
     TextView selection;
@@ -39,11 +40,11 @@ public class SystemsActivity extends AppCompatActivity {
 
     // получаем мапу всех систем для доступа к ним. Доступ осуществляется по имени путем выбора
     // имени в селекционном меню
-    public LinkedHashMap<String, String> getAllSystems() {
-        LinkedHashMap<String, String> systList = new LinkedHashMap<>();
+    public LinkedHashMap<String, ArrayList<String>> getAllSystems() {
+        LinkedHashMap<String, ArrayList<String>> systList = new LinkedHashMap<>();
         Intent intentConnection = getIntent();
         for (String name : intentConnection.getExtras().keySet()) {
-            systList.put(name, intentConnection.getStringExtra(name));
+            systList.put(name, intentConnection.getStringArrayListExtra(name));
         }
         return systList;
     }
@@ -56,6 +57,7 @@ public class SystemsActivity extends AppCompatActivity {
         selection = findViewById(R.id.selection_sys);
         systemsNames = getAllSystemsNames();
         systlist = getAllSystems();
+        selection.setText("System: ");
 
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, systemsNames);
@@ -77,7 +79,7 @@ public class SystemsActivity extends AppCompatActivity {
                 if ("_________________".equals(systName)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SystemsActivity.this);
                     builder.setMessage("Выберите систему")
-                            .setNegativeButton("OK", null)
+                            .setNeutralButton("OK", null)
                             .create()
                             .show();
                 } else {
