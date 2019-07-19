@@ -234,7 +234,6 @@ public class TableMainLayout extends RelativeLayout {
             Log.v("TableMainLayout.java", this.headerCellsWidth[x] + "");
         }
 
-//        int columnNum = 0;
         for (String name : datamap.keySet()) {
             if (headers[0].equals(name)) {
                 for (int columnNum2 = 0; columnNum2 < datamap.get(name).size(); columnNum2++) {
@@ -243,14 +242,6 @@ public class TableMainLayout extends RelativeLayout {
                     this.tableC.addView(tableRowForTableC);
                 }
             }
-//            else {
-//                TableRow tableRowForTableD = this.taleRowForTableD(datamap.get(name), columnNum);
-//                tableRowForTableD.setBackgroundColor(Color.LTGRAY);
-//                this.tableD.addView(tableRowForTableD);
-//                if (columnNum < (datamap.get(name)).size() - 1) {
-//                    columnNum++;
-//                } else columnNum = 0;
-//            }
         }
 
         for (int columnNum = 0; columnNum < datamap.get(headers[0]).size(); columnNum++) {
@@ -258,8 +249,6 @@ public class TableMainLayout extends RelativeLayout {
             tableRowForTableD.setBackgroundColor(Color.LTGRAY);
             this.tableD.addView(tableRowForTableD);
         }
-
-
     }
 
     // a TableRow for table C
@@ -342,7 +331,6 @@ public class TableMainLayout extends RelativeLayout {
 
         int tableAChildCount = ((TableRow) this.tableA.getChildAt(0)).getChildCount();
         int tableBChildCount = ((TableRow) this.tableB.getChildAt(0)).getChildCount();
-        ;
 
         for (int x = 0; x < (tableAChildCount + tableBChildCount); x++) {
 
