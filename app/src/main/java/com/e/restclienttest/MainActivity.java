@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     // параметры для запроса в SAP
-    String table = "T001";
-    String fieldsQuan = "1";
+    String table = "T005T";
+    String fieldsQuan = "3";
     String language;
     String where = " ";
     String order = " ";
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
 
         // передаем введенные данные через LoginActivity.class
         Intent intentMain = getIntent();
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         // составляем url с параметрами идентификации(применим после настройки сервера)
         StringBuilder urlSB = new StringBuilder();
-        urlSB.append("http://192.168.0.38:8080/rest/rest/wmap" + "/").append(systemAddress).append("/")
+        urlSB.append("http://192.168.0.21:8080/rest/rest/wmap" + "/").append(systemAddress).append("/")
                 .append(login).append("/").append(password).append("/").append(number).append("/").append(table);
 
         if (!fieldsQuan.equals(" ")) {
@@ -119,8 +119,9 @@ public class MainActivity extends AppCompatActivity {
                         for (int i = 0; i < sapDataList.size(); i++) {
                             tempMap.put(sapDataList.get(i).getName(), sapDataList.get(i).getValues());
                         }
+
                         visualisation(table, fieldsQuan, language, where, order, group, fieldNames, tempMap);
-                        dataSetList.get(table + fieldsQuan + language + where + order + group + fieldNames).keyVisualisation();
+//                        dataSetList.get(table + fieldsQuan + language + where + order + group + fieldNames).keyVisualisation();
                     }
                 },
                 new Response.ErrorListener() {
@@ -158,18 +159,20 @@ public class MainActivity extends AppCompatActivity {
                               String fieldsQuan, String language, String where, String order,
                               String group, String fieldNames, LinkedHashMap<String, LinkedList<String>> tempMap) {
         LinearLayout linear = findViewById(R.id.linear);
-        for (String key : tempMap.keySet()) {
-            //берем наш кастомный лейаут находим через него все наши кнопки и едит тексты, задаем нужные данные
-            View view = getLayoutInflater().inflate(R.layout.custom_edittext_layout, null);
-            Button deleteField = view.findViewById(R.id.button2);
-            EditText text = view.findViewById(R.id.editText);
-            String val = String.valueOf(tempMap.get(key));
-            text.setText((val));
-
-            //добавляем все что создаем в массив
-            linear.addView(view);
-        }
-        dataSetList.get(table + fieldsQuan + language + where + order + group + fieldNames).setLinear(linear);
+        TableMainLayout tab = new TableMainLayout(this, tempMap);
+        setContentView(tab);
+//        for (String key : tempMap.keySet()) {
+//            //берем наш кастомный лейаут находим через него все наши кнопки и едит тексты, задаем нужные данные
+//            View view = getLayoutInflater().inflate(R.layout.custom_edittext_layout, null);
+//            Button deleteField = view.findViewById(R.id.button2);
+//            EditText text = view.findViewById(R.id.editText);
+//            String val = String.valueOf(tempMap.get(key));
+//            text.setText((val));
+//
+//            //добавляем все что создаем в массив
+//            linear.addView(view);
+//        }
+//        dataSetList.get(table + fieldsQuan + language + where + order + group + fieldNames).setLinear(linear);
     }
 
 

@@ -23,7 +23,6 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 
 
-
 // класс проверки логина и пароля перед входом
 public class LoginActivity extends AppCompatActivity {
 
@@ -50,13 +49,15 @@ public class LoginActivity extends AppCompatActivity {
                 intentLogin.putExtra("password", password);
                 intentLogin.putExtra("language", language);
 
+                String systemAddress = "";
                 Intent intentSystems = getIntent();
                 for (String name : intentSystems.getExtras().keySet()) {
                     ArrayList<String> value = intentSystems.getStringArrayListExtra(name);
+                    systemAddress = value.get(0);
                     intentLogin.putExtra("systemAddress", value);
                 }
 
-                String urlAuth = "http://192.168.0.38:8080/rest/rest/wmap" + "/" + "syst" + "/" + username + "/" + password;
+                String urlAuth = "http://192.168.0.21:8080/rest/rest/wmap" + "/" + systemAddress + "/" + username + "/" + password;
 
                 // GET запрос к серверу для авторизации
                 final JsonArrayRequest jsonArrayRequestLogin = new JsonArrayRequest(
@@ -70,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                                         new TypeToken<ArrayList<Mapa>>() {
                                         }.getType());
                                 for (int i = 0; i < sapDataList.size(); i++) {
-                                    if(sapDataList.get(i).getName().equals("REPI2")){
+                                    if (sapDataList.get(i).getName().equals("REPI2")) {
                                         intentLogin.putExtra(sapDataList.get(i).getName(), sapDataList.get(i).getValues());
                                     }
                                 }
