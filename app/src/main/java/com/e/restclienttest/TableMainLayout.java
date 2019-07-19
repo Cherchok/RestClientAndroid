@@ -234,7 +234,7 @@ public class TableMainLayout extends RelativeLayout {
             Log.v("TableMainLayout.java", this.headerCellsWidth[x] + "");
         }
 
-        int columnNum = 0;
+//        int columnNum = 0;
         for (String name : datamap.keySet()) {
             if (headers[0].equals(name)) {
                 for (int columnNum2 = 0; columnNum2 < datamap.get(name).size(); columnNum2++) {
@@ -242,15 +242,24 @@ public class TableMainLayout extends RelativeLayout {
                     tableRowForTableC.setBackgroundColor(Color.LTGRAY);
                     this.tableC.addView(tableRowForTableC);
                 }
-            } else {
-                TableRow tableRowForTableD = this.taleRowForTableD(datamap.get(name), columnNum);
-                tableRowForTableD.setBackgroundColor(Color.LTGRAY);
-                this.tableD.addView(tableRowForTableD);
-                if (columnNum < (datamap.get(name)).size() - 1) {
-                    columnNum++;
-                } else columnNum = 0;
             }
+//            else {
+//                TableRow tableRowForTableD = this.taleRowForTableD(datamap.get(name), columnNum);
+//                tableRowForTableD.setBackgroundColor(Color.LTGRAY);
+//                this.tableD.addView(tableRowForTableD);
+//                if (columnNum < (datamap.get(name)).size() - 1) {
+//                    columnNum++;
+//                } else columnNum = 0;
+//            }
         }
+
+        for (int columnNum = 0; columnNum < datamap.get(headers[0]).size(); columnNum++) {
+            TableRow tableRowForTableD = this.taleRowForTableD(columnNum);
+            tableRowForTableD.setBackgroundColor(Color.LTGRAY);
+            this.tableD.addView(tableRowForTableD);
+        }
+
+
     }
 
     // a TableRow for table C
@@ -266,7 +275,7 @@ public class TableMainLayout extends RelativeLayout {
     }
 
 
-    TableRow taleRowForTableD(LinkedList<String> columnData, int columnNum) {
+    TableRow taleRowForTableD(int columnNum) {
         TableRow taleRowForTableD = new TableRow(this.context);
 
         int size = datamap.keySet().size();

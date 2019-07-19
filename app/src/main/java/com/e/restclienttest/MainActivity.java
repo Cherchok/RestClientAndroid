@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     // параметры для запроса в SAP
-    String table = "T005T";
-    String fieldsQuan = "3";
+    String table = "T001";
+    String fieldsQuan = "30";
     String language;
     String where = " ";
     String order = " ";
