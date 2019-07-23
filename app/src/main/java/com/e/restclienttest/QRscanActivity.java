@@ -1,31 +1,127 @@
 package com.e.restclienttest;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 public class QRscanActivity extends AppCompatActivity {
     SurfaceView cameraPreview;
     TextView textResult;
     BarcodeDetector barcodeDetector;
     CameraSource cameraSource;
+
+    String where;
+    String table = "QR";
+    String fieldsQuan = "1";
+    String language;
+    String order = " ";
+    String group = " ";
+    String fieldNames = " ";
+    String url;
+    // параметры клиента
+    String systemAddress;
+    String login;
+    String password;
+    String number = "1";
+    ArrayList<Mapa> sapDataList;
+
     final int RequestCamerPermissinID = 1001;
+
+
+    public void sendQR() {
+
+        // составляем url с параметрами идентификации(применим после настройки сервера)
+        StringBuilder urlSB = new StringBuilder();
+        urlSB.append("http://192.168.0.21:8080/rest/rest/wmap" + "/").append(systemAddress).append("/")
+                .append(login).append("/").append(password).append("/").append(number).append("/").append(table);
+
+        if (!fieldsQuan.equals(" ")) {
+            urlSB.append("/").append(fieldsQuan);
+        }
+        if (!language.equals(" ")) {
+            urlSB.append("/").append(language);
+        }
+        if (!where.equals(" ")) {
+
+            urlSB.append("/").append(where);
+        }
+        if (!order.equals(" ")) {
+            urlSB.append("/").append(order);
+        }
+        if (!group.equals(" ")) {
+            urlSB.append("/").append(group);
+        }
+        if (!fieldNames.equals(" ")) {
+            urlSB.append("/").append(fieldNames);
+        }
+
+
+        // получаем готвый url с внесенными параметрами
+        url = urlSB.toString();
+
+        // GET запрос к серверу
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // TODO
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Rest response", error.toString());
+                    }
+                }
+        );
+        if (jsonArrayRequest.hasHadResponseDelivered()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(QRscanActivity.this);
+            builder.setMessage("QR успешно передан")
+                    .setNeutralButton("OK", null)
+                    .create()
+                    .show();
+        }
+
+        requestQueue.add(jsonArrayRequest);
+        textResult.setText("QR передан успешно");
+
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -52,6 +148,12 @@ public class QRscanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_qr);
+
+        Intent intentMain = getIntent();
+        login = intentMain.getStringExtra("userName");
+        password = intentMain.getStringExtra("password");
+        language = intentMain.getStringExtra("language");
+        systemAddress = intentMain.getStringExtra("systemAddress");
 
         cameraPreview = findViewById(R.id.cameraPreview);
         textResult = findViewById(R.id.txtResult);
@@ -111,6 +213,11 @@ public class QRscanActivity extends AppCompatActivity {
                             Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                             vibrator.vibrate(300);
                             textResult.setText(qrcodes.valueAt(0).displayValue);
+                            where = qrcodes.valueAt(0).displayValue
+                                    .replaceAll("\\r", "~~&")
+                                    .replaceAll("\\n", "~~&")
+                                    .replaceAll(" ", "~~&");
+                            sendQR();
                         }
                     });
                 }

@@ -35,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     // параметры для запроса в SAP
     String table = "T001";
-    String fieldsQuan = "30";
+    String fieldsQuan = "14";
     String language;
-    String where = " ";
+    String where = " "; // "BUKRS >= '5555' AND BUKRS <= 'CZ01'";
     String order = " ";
     String group = " ";
     String fieldNames = " ";
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     String systemAddress;
     String login;
     String password;
-    String number = "0";
+    String number = "1";
 
 
     //сюда будет приходить Sap ответ с наполненными данными
@@ -88,17 +88,23 @@ public class MainActivity extends AppCompatActivity {
 
         if (!fieldsQuan.equals(" ")) {
             urlSB.append("/").append(fieldsQuan);
-        } else if (!language.equals(" ")) {
+        }
+        if (!language.equals(" ")) {
             urlSB.append("/").append(language);
-        } else if (!where.equals(" ")) {
+        }
+        if (!where.equals(" ")) {
             urlSB.append("/").append(where);
-        } else if (!order.equals(" ")) {
+        }
+        if (!order.equals(" ")) {
             urlSB.append("/").append(order);
-        } else if (!group.equals(" ")) {
+        }
+        if (!group.equals(" ")) {
             urlSB.append("/").append(group);
-        } else if (!fieldNames.equals(" ")) {
+        }
+        if (!fieldNames.equals(" ")) {
             urlSB.append("/").append(fieldNames);
         }
+
 
         // получаем готвый url с внесенными параметрами
         url = urlSB.toString();
