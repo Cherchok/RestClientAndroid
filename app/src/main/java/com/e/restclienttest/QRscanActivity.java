@@ -16,6 +16,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -117,10 +118,10 @@ public class QRscanActivity extends AppCompatActivity {
                     .create()
                     .show();
         }
-
         requestQueue.add(jsonArrayRequest);
-        textResult.setText("QR передан успешно");
-
+        if (!(jsonArrayRequest.getUrl() == null)) {
+            textResult.setText("QR передан успешно");
+        }
     }
 
     @Override
