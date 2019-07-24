@@ -10,7 +10,7 @@
     tools:context=".ModulesActivity">
 
     <EditText
-        android:id="@+id/etUsername"
+        android:id="@+id/etTable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -29,7 +29,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/etUsername"
+        android:layout_below="@+id/etTable"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"/>
@@ -46,10 +46,10 @@
         android:inputType="textPersonName"/>
 
     <Button
-        android:id="@+id/bSignIn"
+        android:id="@+id/bEnter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etPassword"
+        android:layout_below="@+id/language"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"

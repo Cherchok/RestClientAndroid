@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Timer;
 import java.util.TimerTask;
 
 public class QRscanActivity extends AppCompatActivity {
@@ -57,12 +56,6 @@ public class QRscanActivity extends AppCompatActivity {
     ArrayList<Mapa> sapDataList;
 
     final int RequestCamerPermissinID = 1001;
-
-    public TimerTask newQRText() {
-        textResult.setText("new QR");
-        return null;
-    }
-
 
     public void sendQR() {
 
@@ -98,13 +91,6 @@ public class QRscanActivity extends AppCompatActivity {
 
 
         // получаем готвый url с внесенными параметрами
-        String tempUrl = urlSB.toString();
-//        try {
-//            url = URLEncoder.encode(tempUrl, "UTF-8");
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-
         url = urlSB.toString();
 
         // GET запрос к серверу

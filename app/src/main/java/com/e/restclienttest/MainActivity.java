@@ -34,13 +34,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     // параметры для запроса в SAP
-    String table = "T001";
-    String fieldsQuan = "14";
+    String table; // = "T001";
+    String fieldsQuan; // = "14";
     String language;
-    String where = " "; // "BUKRS >= '5555' AND BUKRS <= 'CZ01'";
-    String order = " ";
-    String group = " ";
-    String fieldNames = " ";
+    String where; // "BUKRS >= '5555' AND BUKRS <= 'CZ01'";
+    String order; // = " ";
+    String group; // = " ";
+    String fieldNames; //  = " ";
     String url;
 
     // параметры клиента
@@ -57,19 +57,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
 
-        // передаем введенные данные через LoginActivity.class
+        // передаем введенные данные
         Intent intentMain = getIntent();
+
+        systemAddress = intentMain.getStringExtra("systemAddress");
         login = intentMain.getStringExtra("userName");
         password = intentMain.getStringExtra("password");
-        if (language == null) {
-            language = intentMain.getStringExtra("language");
-        }
-        systemAddress = intentMain.getStringExtra("systemAddress");
-
-
-        //  TODO будет вызыватся до метода createSys() метод отрисовки окна идентификации
+        table = intentMain.getStringExtra("table");
+        fieldsQuan = intentMain.getStringExtra("fieldsQuan");
+        language = intentMain.getStringExtra("language");
+        if(!intentMain.getStringExtra("where").equals(" ")){
+            where = intentMain.getStringExtra("where").replaceAll(" ", "~~&");
+        } else where = intentMain.getStringExtra("where");
+        if(!intentMain.getStringExtra("order").equals(" ")){
+            order = intentMain.getStringExtra("order").replaceAll(" ", "~~&");
+        }else order = intentMain.getStringExtra("order");
+        if(!intentMain.getStringExtra("group").equals(" ")){
+            group = intentMain.getStringExtra("group").replaceAll(" ", "~~&");
+        } else group = intentMain.getStringExtra("group");
+        if(!intentMain.getStringExtra("fieldsNames").equals(" ")){
+            fieldNames = intentMain.getStringExtra("fieldsNames").replaceAll(" ", "~~&");
+        } else fieldNames = intentMain.getStringExtra("fieldsNames");
 
         createSys();
 

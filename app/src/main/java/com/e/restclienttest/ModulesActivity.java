@@ -88,7 +88,7 @@ public class ModulesActivity extends AppCompatActivity {
                         break;
 
                     case "Просмотр таблиц": // Z
-                        final Intent intentTab = new Intent(ModulesActivity.this, MainActivity.class);
+                        final Intent intentTab = new Intent(ModulesActivity.this, ParamsActivity.class);
 
                         intentTab.putExtra("userName", login);
                         intentTab.putExtra("password", password);

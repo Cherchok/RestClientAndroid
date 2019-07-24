@@ -31,17 +31,17 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        final EditText etUsername = findViewById(R.id.etUsername);
+        final EditText etUsername = findViewById(R.id.etTable);
         final EditText etPassword = findViewById(R.id.etPassword);
         final EditText lang = findViewById(R.id.language);
-        final Button bLogin = findViewById(R.id.bSignIn);
+        final Button bLogin = findViewById(R.id.bEnter);
         final RequestQueue loginQueue = Volley.newRequestQueue(this);
 
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String username = etUsername.getText().toString().toUpperCase().trim();
-                final String password = etPassword.getText().toString();
+                final String password = etPassword.getText().toString().trim();
                 final String language = lang.getText().toString().toUpperCase().trim();
                 final Intent intentLogin = new Intent(LoginActivity.this, ModulesActivity.class);
 
