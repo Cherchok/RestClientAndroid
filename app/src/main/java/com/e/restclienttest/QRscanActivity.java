@@ -1,7 +1,6 @@
 package com.e.restclienttest;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,7 +15,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -27,15 +25,15 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class QRscanActivity extends AppCompatActivity {
     SurfaceView cameraPreview;
@@ -60,6 +58,11 @@ public class QRscanActivity extends AppCompatActivity {
 
     final int RequestCamerPermissinID = 1001;
 
+    public TimerTask newQRText() {
+        textResult.setText("new QR");
+        return null;
+    }
+
 
     public void sendQR() {
 
@@ -75,7 +78,12 @@ public class QRscanActivity extends AppCompatActivity {
             urlSB.append("/").append(language);
         }
         if (!where.equals(" ")) {
-
+            String st=where;
+            try {
+                where = URLEncoder.encode(st, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             urlSB.append("/").append(where);
         }
         if (!order.equals(" ")) {
@@ -90,6 +98,13 @@ public class QRscanActivity extends AppCompatActivity {
 
 
         // получаем готвый url с внесенными параметрами
+        String tempUrl = urlSB.toString();
+//        try {
+//            url = URLEncoder.encode(tempUrl, "UTF-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+
         url = urlSB.toString();
 
         // GET запрос к серверу
@@ -111,13 +126,7 @@ public class QRscanActivity extends AppCompatActivity {
                     }
                 }
         );
-        if (jsonArrayRequest.hasHadResponseDelivered()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(QRscanActivity.this);
-            builder.setMessage("QR успешно передан")
-                    .setNeutralButton("OK", null)
-                    .create()
-                    .show();
-        }
+
         requestQueue.add(jsonArrayRequest);
         if (!(jsonArrayRequest.getUrl() == null)) {
             textResult.setText("QR передан успешно");
