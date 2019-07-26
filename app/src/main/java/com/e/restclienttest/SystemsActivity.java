@@ -19,6 +19,9 @@ public class SystemsActivity extends AppCompatActivity {
     // список имен доступных систем
     String[] systemsNames;
 
+    // ip сервера
+    String ip;
+
     // список всех систем
     LinkedHashMap<String, ArrayList<String>> systlist;
 
@@ -28,12 +31,16 @@ public class SystemsActivity extends AppCompatActivity {
     // заполняем список модулей имеющимися на сервере
     public String[] getAllSystemsNames() {
         Intent intentConnection = getIntent();
-        String[] systems = new String[intentConnection.getExtras().keySet().size() + 1];
+        String[] systems = new String[intentConnection.getExtras().keySet().size()];
         systems[0] = "_________________";
         int id = 1;
         for (String name : intentConnection.getExtras().keySet()) {
-            systems[id] = name;
-            id++;
+            if (!name.equals("ip")) {
+                systems[id] = name;
+                id++;
+            } else {
+                ip = intentConnection.getStringExtra("ip");
+            }
         }
         return systems;
     }
@@ -85,6 +92,7 @@ public class SystemsActivity extends AppCompatActivity {
                 } else {
                     final Intent intentForLogin = new Intent(SystemsActivity.this, LoginActivity.class);
                     intentForLogin.putExtra(systName, systlist.get(systName));
+                    intentForLogin.putExtra("ip", ip);
                     SystemsActivity.this.startActivity(intentForLogin);
                 }
 

@@ -36,10 +36,10 @@ public class ConnectionActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-//        String urlConnection = "http://192.168.0.21:8080/rest/rest/wmap/connection";
         String urlConnection = "http://"+ip+"/rest/rest/wmap/connection";
         final RequestQueue connectionQueue = Volley.newRequestQueue(this);
         final Intent intentConnection = new Intent(ConnectionActivity.this, SystemsActivity.class);
+        intentConnection.putExtra("ip", ip);
 
         final JsonArrayRequest jsonArrayRequestConnection = new JsonArrayRequest(
                 Request.Method.GET,

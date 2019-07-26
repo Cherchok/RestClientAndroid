@@ -50,14 +50,21 @@ public class LoginActivity extends AppCompatActivity {
                 intentLogin.putExtra("language", language);
 
                 String systemAddress = "";
+                String ip = "";
                 Intent intentSystems = getIntent();
                 for (String name : intentSystems.getExtras().keySet()) {
-                    ArrayList<String> value = intentSystems.getStringArrayListExtra(name);
-                    systemAddress = value.get(0);
-                    intentLogin.putExtra("systemAddress", value);
+                    if (!name.equals("ip")) {
+                        ArrayList<String> value = intentSystems.getStringArrayListExtra(name);
+                        systemAddress = value.get(0);
+                        intentLogin.putExtra("systemAddress", value);
+                    } else {
+                        ip = intentSystems.getStringExtra("ip");
+                        intentLogin.putExtra("ip", ip);
+                    }
+
                 }
 
-                String urlAuth = "http://192.168.0.21:8080/rest/rest/wmap" + "/" + systemAddress + "/" + username + "/" + password;
+                String urlAuth = "http://" + ip + "/rest/rest/wmap" + "/" + systemAddress + "/" + username + "/" + password;
 
                 // GET запрос к серверу для авторизации
                 final JsonArrayRequest jsonArrayRequestLogin = new JsonArrayRequest(
