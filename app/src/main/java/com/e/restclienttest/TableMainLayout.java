@@ -69,6 +69,9 @@ public class TableMainLayout extends RelativeLayout {
             if (name.equals("decimals")) {
                 flag = false;
             }
+            if (name.equals("clientNumber")) {
+                flag = false;
+            }
             if (flag) {
                 tableMap.put(name, dataMap.get(name));
             }

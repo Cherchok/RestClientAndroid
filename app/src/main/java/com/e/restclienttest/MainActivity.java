@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     String systemAddress;
     String login;
     String password;
-    String number = "1";
+    String number;
 
 
     //сюда будет приходить Sap ответ с наполненными данными
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         systemAddress = intentMain.getStringExtra("systemAddress");
         login = intentMain.getStringExtra("userName");
         password = intentMain.getStringExtra("password");
+        number = intentMain.getStringExtra("clientNumber");
         table = intentMain.getStringExtra("table");
         fieldsQuan = intentMain.getStringExtra("fieldsQuan");
         language = intentMain.getStringExtra("language");
@@ -79,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
         if(!intentMain.getStringExtra("fieldsNames").equals(" ")){
             fieldNames = intentMain.getStringExtra("fieldsNames").replaceAll(" ", "~~&");
         } else fieldNames = intentMain.getStringExtra("fieldsNames");
-
         createSys();
 
     }

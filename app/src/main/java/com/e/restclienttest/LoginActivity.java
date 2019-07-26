@@ -74,6 +74,9 @@ public class LoginActivity extends AppCompatActivity {
                                     if (sapDataList.get(i).getName().equals("REPI2")) {
                                         intentLogin.putExtra(sapDataList.get(i).getName(), sapDataList.get(i).getValues());
                                     }
+                                    if (sapDataList.get(i).getName().equals("clientNumber")) {
+                                        intentLogin.putExtra(sapDataList.get(i).getName(), sapDataList.get(i).getValues().get(0));
+                                    }
                                 }
                                 LoginActivity.this.startActivity(intentLogin);
                             }

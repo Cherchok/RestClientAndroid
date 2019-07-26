@@ -52,7 +52,7 @@ public class QRscanActivity extends AppCompatActivity {
     String systemAddress;
     String login;
     String password;
-    String number = "1";
+    String number;
     ArrayList<Mapa> sapDataList;
 
     final int RequestCamerPermissinID = 1001;
@@ -71,7 +71,7 @@ public class QRscanActivity extends AppCompatActivity {
             urlSB.append("/").append(language);
         }
         if (!where.equals(" ")) {
-            String st=where;
+            String st = where;
             try {
                 where = URLEncoder.encode(st, "UTF-8");
             } catch (UnsupportedEncodingException e) {
@@ -150,6 +150,7 @@ public class QRscanActivity extends AppCompatActivity {
         password = intentMain.getStringExtra("password");
         language = intentMain.getStringExtra("language");
         systemAddress = intentMain.getStringExtra("systemAddress");
+        number = intentMain.getStringExtra("clientNumber");
 
         cameraPreview = findViewById(R.id.cameraPreview);
         textResult = findViewById(R.id.txtResult);
