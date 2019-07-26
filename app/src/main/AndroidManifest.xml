@@ -30,6 +30,7 @@
         <activity android:name=".ModulesActivity"/>
         <activity android:name=".QRscanActivity"/>
         <activity android:name=".SystemsActivity"/>
+        <activity android:name=".SetIP"/>
 
     </application>
 

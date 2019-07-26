@@ -1,6 +1,7 @@
 package com.e.restclienttest;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,15 +29,24 @@ public class ConnectionActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection);
-        Util util = new Util();
-        String ip="";
+        String ip;
+
+
+        MyPropertiesHolder propHolder2 = null;
         try {
-            ip = Util.getProperty("ip", getApplicationContext());
+            propHolder2 = new MyPropertiesHolder(this, "test.properties", MyPropertiesHolder.MODE_UPDATE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ip = propHolder2.getProperty("ip1");
+        try {
+            propHolder2.commit();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        String urlConnection = "http://"+ip+"/rest/rest/wmap/connection";
+        String urlConnection = "http://" + ip + "/rest/rest/wmap/connection";
+
         final RequestQueue connectionQueue = Volley.newRequestQueue(this);
         final Intent intentConnection = new Intent(ConnectionActivity.this, SystemsActivity.class);
         intentConnection.putExtra("ip", ip);
@@ -64,6 +74,13 @@ public class ConnectionActivity extends AppCompatActivity {
                         AlertDialog.Builder builder = new AlertDialog.Builder(ConnectionActivity.this);
                         builder.setMessage("Сервер не отвечает")
                                 .setNegativeButton("Retry", null)
+                                .setNeutralButton("Ввести IP", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent intentSetIP = new Intent(ConnectionActivity.this, SetIP.class);
+                                        ConnectionActivity.this.startActivity(intentSetIP);
+                                    }
+                                })
                                 .create()
                                 .show();
                     }

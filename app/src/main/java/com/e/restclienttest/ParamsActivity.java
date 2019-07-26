@@ -1,6 +1,7 @@
 package com.e.restclienttest;
 
 import android.content.Intent;
+import android.content.SearchRecentSuggestionsProvider;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -48,6 +49,7 @@ public class ParamsActivity extends AppCompatActivity {
                 final String group = etGroup.getText().toString().toUpperCase().trim();
                 final String fieldsNames = etFieldsNames.getText().toString().toUpperCase().trim();
                 final String clientNumber = intentModules.getStringExtra("clientNumber");
+                final String ip = intentModules.getStringExtra("ip");
 
                 // создал проверочную мапу для проверки введенных парметров
                 LinkedHashMap<String, String> chekMap = new LinkedHashMap<>();
@@ -62,6 +64,7 @@ public class ParamsActivity extends AppCompatActivity {
                 chekMap.put("group", group);
                 chekMap.put("fieldsNames", fieldsNames);
                 chekMap.put("clientNumber", clientNumber);
+                chekMap.put("ip", ip);
 
                 // заполняем параметрами мапу, которая передаст их основному классу исполнения
                 Intent intentParams = new Intent(ParamsActivity.this, MainActivity.class);

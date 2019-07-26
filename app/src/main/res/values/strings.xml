@@ -17,4 +17,6 @@
     <string name="order">Order</string>
     <string name="group">Group</string>
     <string name="fields_names">Fields names</string>
+    <string name="connect">Connect</string>
+    <string name="enter_ip">Enter IP</string>
 </resources>

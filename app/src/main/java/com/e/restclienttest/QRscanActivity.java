@@ -52,6 +52,7 @@ public class QRscanActivity extends AppCompatActivity {
     String login;
     String password;
     String number;
+    String ip;
     ArrayList<Mapa> sapDataList;
 
     final int RequestCamerPermissinID = 1001;
@@ -60,7 +61,7 @@ public class QRscanActivity extends AppCompatActivity {
 
         // составляем url с параметрами идентификации(применим после настройки сервера)
         StringBuilder urlSB = new StringBuilder();
-        urlSB.append("http://192.168.0.21:8080/rest/rest/wmap" + "/").append(systemAddress).append("/")
+        urlSB.append("http://"+ip+"/rest/rest/wmap" + "/").append(systemAddress).append("/")
                 .append(login).append("/").append(password).append("/").append(number).append("/").append(table);
 
         if (!fieldsQuan.equals(" ")) {
@@ -150,6 +151,7 @@ public class QRscanActivity extends AppCompatActivity {
         language = intentMain.getStringExtra("language");
         systemAddress = intentMain.getStringExtra("systemAddress");
         number = intentMain.getStringExtra("clientNumber");
+        ip = intentMain.getStringExtra("ip");
 
         cameraPreview = findViewById(R.id.cameraPreview);
         textResult = findViewById(R.id.txtResult);

@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     String login;
     String password;
     String number;
+    String ip;
 
 
     //сюда будет приходить Sap ответ с наполненными данными
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         login = intentMain.getStringExtra("userName");
         password = intentMain.getStringExtra("password");
         number = intentMain.getStringExtra("clientNumber");
+        ip = intentMain.getStringExtra("ip");
         table = intentMain.getStringExtra("table");
         fieldsQuan = intentMain.getStringExtra("fieldsQuan");
         language = intentMain.getStringExtra("language");
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         // составляем url с параметрами идентификации(применим после настройки сервера)
         StringBuilder urlSB = new StringBuilder();
-        urlSB.append("http://192.168.0.21:8080/rest/rest/wmap" + "/").append(systemAddress).append("/")
+        urlSB.append("http://"+ip+"/rest/rest/wmap" + "/").append(systemAddress).append("/")
                 .append(login).append("/").append(password).append("/").append(number).append("/").append(table);
 
         if (!fieldsQuan.equals(" ")) {
