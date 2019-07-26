@@ -18,6 +18,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 // при закрузке приложения запускается данный класс в котором идет загрузка доступных систем
@@ -27,7 +28,16 @@ public class ConnectionActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection);
-        String urlConnection = "http://192.168.0.21:8080/rest/rest/wmap/connection";
+        Util util = new Util();
+        String ip="";
+        try {
+            ip = Util.getProperty("ip", getApplicationContext());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        String urlConnection = "http://192.168.0.21:8080/rest/rest/wmap/connection";
+        String urlConnection = "http://"+ip+"/rest/rest/wmap/connection";
         final RequestQueue connectionQueue = Volley.newRequestQueue(this);
         final Intent intentConnection = new Intent(ConnectionActivity.this, SystemsActivity.class);
 
