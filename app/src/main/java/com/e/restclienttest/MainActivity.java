@@ -67,21 +67,33 @@ public class MainActivity extends AppCompatActivity {
         password = intentMain.getStringExtra("password");
         number = intentMain.getStringExtra("clientNumber");
         ip = intentMain.getStringExtra("ip");
-        table = intentMain.getStringExtra("table");
-        fieldsQuan = intentMain.getStringExtra("fieldsQuan");
+
+        if(!intentMain.getStringExtra("table").equals(" ")){
+            table = intentMain.getStringExtra("table");
+        } else table = intentMain.getStringExtra("table").replaceAll(" ", "~~~");
+
+        if(!intentMain.getStringExtra("fieldsQuan").equals(" ")){
+            fieldsQuan = intentMain.getStringExtra("fieldsQuan");
+        }else fieldsQuan = intentMain.getStringExtra("fieldsQuan").replaceAll(" ", "~~~");
+
         language = intentMain.getStringExtra("language");
-        if(!intentMain.getStringExtra("where").equals(" ")){
+
+        if (!intentMain.getStringExtra("where").equals(" ")) {
             where = intentMain.getStringExtra("where").replaceAll(" ", "~~&");
-        } else where = intentMain.getStringExtra("where");
-        if(!intentMain.getStringExtra("order").equals(" ")){
+        } else where = intentMain.getStringExtra("where").replaceAll(" ", "~~~");
+
+        if (!intentMain.getStringExtra("order").equals(" ")) {
             order = intentMain.getStringExtra("order").replaceAll(" ", "~~&");
-        }else order = intentMain.getStringExtra("order");
-        if(!intentMain.getStringExtra("group").equals(" ")){
+        } else order = intentMain.getStringExtra("order").replaceAll(" ", "~~~");
+
+        if (!intentMain.getStringExtra("group").equals(" ")) {
             group = intentMain.getStringExtra("group").replaceAll(" ", "~~&");
-        } else group = intentMain.getStringExtra("group");
-        if(!intentMain.getStringExtra("fieldsNames").equals(" ")){
+        } else group = intentMain.getStringExtra("group").replaceAll(" ", "~~~");
+
+        if (!intentMain.getStringExtra("fieldsNames").equals(" ")) {
             fieldNames = intentMain.getStringExtra("fieldsNames").replaceAll(" ", "~~&");
-        } else fieldNames = intentMain.getStringExtra("fieldsNames");
+        } else fieldNames = intentMain.getStringExtra("fieldsNames").replaceAll(" ", "~~~");
+
         createSys();
 
     }
@@ -94,27 +106,12 @@ public class MainActivity extends AppCompatActivity {
 
         // составляем url с параметрами идентификации(применим после настройки сервера)
         StringBuilder urlSB = new StringBuilder();
-        urlSB.append("http://"+ip+"/rest/rest/wmap" + "/").append(systemAddress).append("/")
-                .append(login).append("/").append(password).append("/").append(number).append("/").append(table);
 
-        if (!fieldsQuan.equals(" ")) {
-            urlSB.append("/").append(fieldsQuan);
-        }
-        if (!language.equals(" ")) {
-            urlSB.append("/").append(language);
-        }
-        if (!where.equals(" ")) {
-            urlSB.append("/").append(where);
-        }
-        if (!order.equals(" ")) {
-            urlSB.append("/").append(order);
-        }
-        if (!group.equals(" ")) {
-            urlSB.append("/").append(group);
-        }
-        if (!fieldNames.equals(" ")) {
-            urlSB.append("/").append(fieldNames);
-        }
+        urlSB.append("http://").append(ip).append("/rest/rest/wmap").append("/").append(systemAddress)
+                .append("/").append(login).append("/").append(password).append("/").append(number)
+                .append("/").append(table).append("/").append(fieldsQuan).append("/").append(language)
+                .append("/").append(where).append("/").append(order).append("/").append(group)
+                .append("/").append(fieldNames);
 
 
         // получаем готвый url с внесенными параметрами

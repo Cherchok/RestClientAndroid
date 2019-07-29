@@ -35,14 +35,21 @@ public class ConnectionActivity extends AppCompatActivity {
         MyPropertiesHolder propHolder2 = null;
         try {
             propHolder2 = new MyPropertiesHolder(this, "test.properties", MyPropertiesHolder.MODE_UPDATE);
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ip = propHolder2.getProperty("ip1");
+
         try {
-            propHolder2.commit();
-        } catch (IOException e) {
-            e.printStackTrace();
+            ip = propHolder2.getProperty("ip1");
+            try {
+                propHolder2.commit();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (NullPointerException e) {
+            ip = " ";
         }
 
         String urlConnection = "http://" + ip + "/rest/rest/wmap/connection";

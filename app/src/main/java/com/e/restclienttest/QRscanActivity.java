@@ -31,7 +31,6 @@ import org.json.JSONArray;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 
 public class QRscanActivity extends AppCompatActivity {
     SurfaceView cameraPreview;
@@ -43,9 +42,9 @@ public class QRscanActivity extends AppCompatActivity {
     String table = "QR";
     String fieldsQuan = "1";
     String language;
-    String order = " ";
-    String group = " ";
-    String fieldNames = " ";
+    String order = "~~~";
+    String group = "~~~";
+    String fieldNames = "~~~";
     String url;
     // параметры клиента
     String systemAddress;
@@ -53,7 +52,6 @@ public class QRscanActivity extends AppCompatActivity {
     String password;
     String number;
     String ip;
-    ArrayList<Mapa> sapDataList;
 
     final int RequestCamerPermissinID = 1001;
 
@@ -61,34 +59,19 @@ public class QRscanActivity extends AppCompatActivity {
 
         // составляем url с параметрами идентификации(применим после настройки сервера)
         StringBuilder urlSB = new StringBuilder();
-        urlSB.append("http://"+ip+"/rest/rest/wmap" + "/").append(systemAddress).append("/")
-                .append(login).append("/").append(password).append("/").append(number).append("/").append(table);
 
-        if (!fieldsQuan.equals(" ")) {
-            urlSB.append("/").append(fieldsQuan);
+        // для считывания кириллицы необходимо произвести перекодировку
+        String st = where;
+        try {
+            where = URLEncoder.encode(st, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
-        if (!language.equals(" ")) {
-            urlSB.append("/").append(language);
-        }
-        if (!where.equals(" ")) {
-            String st = where;
-            try {
-                where = URLEncoder.encode(st, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            urlSB.append("/").append(where);
-        }
-        if (!order.equals(" ")) {
-            urlSB.append("/").append(order);
-        }
-        if (!group.equals(" ")) {
-            urlSB.append("/").append(group);
-        }
-        if (!fieldNames.equals(" ")) {
-            urlSB.append("/").append(fieldNames);
-        }
-
+        urlSB.append("http://").append(ip).append("/rest/rest/wmap").append("/").append(systemAddress)
+                .append("/").append(login).append("/").append(password).append("/").append(number)
+                .append("/").append(table).append("/").append(fieldsQuan).append("/").append(language)
+                .append("/").append(where).append("/").append(order).append("/").append(group)
+                .append("/").append(fieldNames);
 
         // получаем готвый url с внесенными параметрами
         url = urlSB.toString();
