@@ -1,5 +1,7 @@
 package com.e.restclienttest;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +9,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -42,6 +45,7 @@ public class ModulesActivity extends AppCompatActivity {
         return modules;
     }
 
+    // метод вызывется при создании(вызове) данного Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,4 +116,18 @@ public class ModulesActivity extends AppCompatActivity {
         };
         spinner.setOnItemSelectedListener(itemSelectedListener);
     }
+
+
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        System.out.println("destroyingggggggggggggg!!!!!!!!");
+//    }
+
+//    // метод вызывется при нажатии кнопки return на данном Activity на устройстве android
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//
+//    }
 }

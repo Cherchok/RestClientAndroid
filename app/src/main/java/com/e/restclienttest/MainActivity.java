@@ -48,13 +48,14 @@ public class MainActivity extends AppCompatActivity {
     String login;
     String password;
     String number;
+    String sessionNumber;
     String ip;
 
 
     //сюда будет приходить Sap ответ с наполненными данными
     ArrayList<Mapa> sapDataList = new ArrayList<>();
 
-
+    // метод вызывется при создании(вызове) данного Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,13 +69,13 @@ public class MainActivity extends AppCompatActivity {
         number = intentMain.getStringExtra("clientNumber");
         ip = intentMain.getStringExtra("ip");
 
-        if(!intentMain.getStringExtra("table").equals(" ")){
+        if (!intentMain.getStringExtra("table").equals(" ")) {
             table = intentMain.getStringExtra("table");
         } else table = intentMain.getStringExtra("table").replaceAll(" ", "~~~");
 
-        if(!intentMain.getStringExtra("fieldsQuan").equals(" ")){
+        if (!intentMain.getStringExtra("fieldsQuan").equals(" ")) {
             fieldsQuan = intentMain.getStringExtra("fieldsQuan");
-        }else fieldsQuan = intentMain.getStringExtra("fieldsQuan").replaceAll(" ", "~~~");
+        } else fieldsQuan = intentMain.getStringExtra("fieldsQuan").replaceAll(" ", "~~~");
 
         language = intentMain.getStringExtra("language");
 
@@ -96,6 +97,47 @@ public class MainActivity extends AppCompatActivity {
 
         createSys();
 
+    }
+
+    // метод вызывется при нажатии кнопки return на данном Activity на устройстве android
+    public void onReturn(String sessionNumber) {
+        this.sessionNumber = sessionNumber;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        // составляем url с параметрами идентификации(применим после настройки сервера)
+        StringBuilder urlSB = new StringBuilder();
+
+        urlSB.append("http://").append(ip).append("/rest/rest/wmap").append("/").append(systemAddress)
+                .append("/").append(login).append("/").append(password).append("/").append(sessionNumber)
+                .append("/").append(table).append("/").append(fieldsQuan).append("/").append(language)
+                .append("/").append(where).append("/").append(order).append("/").append(group)
+                .append("/").append(fieldNames);
+
+        String urlReturn = String.valueOf(urlSB);
+
+        RequestQueue deleteRequest = Volley.newRequestQueue(this);
+        JsonArrayRequest deleteDataFromSession = new JsonArrayRequest(
+                Request.Method.DELETE,
+                urlReturn,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        );
+        deleteRequest.add(deleteDataFromSession);
     }
 
     // кидает запрос серверу и получает ответ заполненный метод который заполняется данными из ответа
@@ -132,7 +174,11 @@ public class MainActivity extends AppCompatActivity {
                                 }.getType());
                         for (int i = 0; i < sapDataList.size(); i++) {
                             tempMap.put(sapDataList.get(i).getName(), sapDataList.get(i).getValues());
+                            if (sapDataList.get(i).getName().equals("clientNumber")) {
+                                sessionNumber = sapDataList.get(i).getValues().get(0);
+                            }
                         }
+
 
                         visualisation(table, fieldsQuan, language, where, order, group, fieldNames, tempMap);
 //                        dataSetList.get(table + fieldsQuan + language + where + order + group + fieldNames).keyVisualisation();
