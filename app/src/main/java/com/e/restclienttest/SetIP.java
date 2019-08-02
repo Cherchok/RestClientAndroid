@@ -12,21 +12,18 @@ import java.io.IOException;
 
 public class SetIP extends AppCompatActivity {
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setip);
+    static String ip;
+    MyPropertiesHolder propHolder;
 
+    // извлекаем введенный вручную IP
+    private void retriveIP() {
         final EditText etIP = findViewById(R.id.etIP);
         Button connectBtn = findViewById(R.id.bConnect);
-
         connectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String ip = etIP.getText().toString().trim();
-                Intent intentConnection = new Intent(SetIP.this, ConnectionActivity.class);
-
-                MyPropertiesHolder propHolder = null;
+                ip = etIP.getText().toString().trim();
+                Intent intentConnection = new Intent(SetIP.this, ClientActivity.class);
                 try {
                     propHolder = new MyPropertiesHolder(SetIP.this, "test.properties", MyPropertiesHolder.MODE_CREATE);
                 } catch (IOException e) {
@@ -40,10 +37,14 @@ public class SetIP extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 SetIP.this.startActivity(intentConnection);
-
             }
         });
+    }
 
-
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_setip);
+        retriveIP();
     }
 }

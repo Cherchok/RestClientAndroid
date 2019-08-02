@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 
@@ -55,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     //сюда будет приходить Sap ответ с наполненными данными
     ArrayList<Mapa> sapDataList = new ArrayList<>();
 
+
+
     // метод вызывется при создании(вызове) данного Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
         // передаем введенные данные
         Intent intentMain = getIntent();
-
         systemAddress = intentMain.getStringExtra("systemAddress");
         login = intentMain.getStringExtra("userName");
         password = intentMain.getStringExtra("password");
@@ -96,49 +94,112 @@ public class MainActivity extends AppCompatActivity {
         } else fieldNames = intentMain.getStringExtra("fieldsNames").replaceAll(" ", "~~~");
 
         createSys();
-
     }
 
-    // метод вызывется при нажатии кнопки return на данном Activity на устройстве android
-    public void onReturn(String sessionNumber) {
-        this.sessionNumber = sessionNumber;
-    }
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        timer.start();
+//    }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+//    @Override
+//    protected void onDestroy() {
+//        // составляем url с параметрами идентификации(применим после настройки сервера)
+//        StringBuilder urlSB = new StringBuilder();
+//
+//        urlSB.append("http://").append(ip).append("/rest/rest/wmap").append("/").append(systemAddress)
+//                .append("/").append(login).append("/").append(password).append("/").append(sessionNumber);
+//
+//        String urlDeleteSession = String.valueOf(urlSB);
+//
+//        RequestQueue deleteSession = Volley.newRequestQueue(MainActivity.this);
+//        JsonArrayRequest deleteDataFromSession = new JsonArrayRequest(
+//                Request.Method.DELETE,
+//                urlDeleteSession,
+//                null,
+//                new Response.Listener<JSONArray>() {
+//                    @Override
+//                    public void onResponse(JSONArray response) {
+//
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//
+//                    }
+//                }
+//        );
+//        deleteSession.add(deleteDataFromSession);
+//
+//        urlSB = new StringBuilder();
+//
+//        urlSB.append("http://").append(ip).append("/rest/rest/wmap").append("/").append(systemAddress)
+//                .append("/").append(login).append("/").append(password).append("/").append(number);
+//
+//        String urlDeleteSyst = String.valueOf(urlSB);
+//
+//        JsonArrayRequest deleteSystSession = new JsonArrayRequest(
+//                Request.Method.DELETE,
+//                urlDeleteSyst,
+//                null,
+//                new Response.Listener<JSONArray>() {
+//                    @Override
+//                    public void onResponse(JSONArray response) {
+//
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//
+//                    }
+//                }
+//        );
+//        deleteSession.add(deleteSystSession);
+//        Intent intentBackLogin = new Intent(MainActivity.this, LoginActivity.class);
+//        finish();
+//        MainActivity.this.startActivity(intentBackLogin);
+//        super.onDestroy();
+//    }
 
-        // составляем url с параметрами идентификации(применим после настройки сервера)
-        StringBuilder urlSB = new StringBuilder();
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//
+//        //
+//        // составляем url с параметрами идентификации(применим после настройки сервера)
+//        StringBuilder urlSB = new StringBuilder();
+//
+//        urlSB.append("http://").append(ip).append("/rest/rest/wmap").append("/").append(systemAddress)
+//                .append("/").append(login).append("/").append(password).append("/").append(sessionNumber)
+//                .append("/").append(table).append("/").append(fieldsQuan).append("/").append(language)
+//                .append("/").append(where).append("/").append(order).append("/").append(group)
+//                .append("/").append(fieldNames);
+//
+//        String urlReturn = String.valueOf(urlSB);
+//
+//        RequestQueue deleteRequest = Volley.newRequestQueue(this);
+//        JsonArrayRequest deleteDataFromSession = new JsonArrayRequest(
+//                Request.Method.DELETE,
+//                urlReturn,
+//                null,
+//                new Response.Listener<JSONArray>() {
+//                    @Override
+//                    public void onResponse(JSONArray response) {
+//
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//
+//                    }
+//                }
+//        );
+//        deleteRequest.add(deleteDataFromSession);
+//    }
 
-        urlSB.append("http://").append(ip).append("/rest/rest/wmap").append("/").append(systemAddress)
-                .append("/").append(login).append("/").append(password).append("/").append(sessionNumber)
-                .append("/").append(table).append("/").append(fieldsQuan).append("/").append(language)
-                .append("/").append(where).append("/").append(order).append("/").append(group)
-                .append("/").append(fieldNames);
-
-        String urlReturn = String.valueOf(urlSB);
-
-        RequestQueue deleteRequest = Volley.newRequestQueue(this);
-        JsonArrayRequest deleteDataFromSession = new JsonArrayRequest(
-                Request.Method.DELETE,
-                urlReturn,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }
-        );
-        deleteRequest.add(deleteDataFromSession);
-    }
 
     // кидает запрос серверу и получает ответ заполненный метод который заполняется данными из ответа
     public void getConnection(final String systemAddress, final String login, final String password, final String number,

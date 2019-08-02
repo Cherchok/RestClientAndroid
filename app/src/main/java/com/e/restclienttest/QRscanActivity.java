@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -31,6 +32,7 @@ import org.json.JSONArray;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Arrays;
 
 public class QRscanActivity extends AppCompatActivity {
     SurfaceView cameraPreview;
@@ -99,6 +101,22 @@ public class QRscanActivity extends AppCompatActivity {
         requestQueue.add(jsonArrayRequest);
         if (!(jsonArrayRequest.getUrl() == null)) {
             textResult.setText("QR передан успешно");
+            CountDownTimer timer = new CountDownTimer(3000, 1000) {
+
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                @Override
+                public void onFinish() {
+                    try {
+                        textResult.setText("Please focus camera to QR code");
+                    } catch (Exception e) {
+                        Log.e("Error", "Error: " + e.toString());
+                    }
+                }
+            }.start();
         }
     }
 
@@ -194,15 +212,34 @@ public class QRscanActivity extends AppCompatActivity {
                             Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                             vibrator.vibrate(300);
                             textResult.setText(qrcodes.valueAt(0).displayValue);
-                            where = qrcodes.valueAt(0).displayValue
-                                    .replaceAll("\\r", "~~&")
-                                    .replaceAll("\\n", "~~&")
-                                    .replaceAll(" ", "~~&");
+                            where = qrData(qrcodes);
                             sendQR();
                         }
                     });
                 }
             }
         });
+    }
+
+    private String qrData(SparseArray<Barcode> qrcodes) {
+        String infoForSending;
+        String info;
+        if (qrcodes.valueAt(0).contactInfo != null) {
+            info = qrcodes.valueAt(0).displayValue +
+                    "\n" +
+                    qrcodes.valueAt(0).contactInfo.title +
+                    "\n" +
+                    Arrays.toString(new String[]{qrcodes.valueAt(0).contactInfo.phones[0].number}) +
+                    "\n" +
+                    Arrays.toString(new String[]{qrcodes.valueAt(0).contactInfo.emails[0].address}) +
+                    "\n" +
+                    qrcodes.valueAt(0).contactInfo.urls[0];
+        } else info = qrcodes.valueAt(0).displayValue;
+
+        infoForSending = info
+                .replaceAll("\\r", "~~&")
+                .replaceAll("\\n", "~~`")
+                .replaceAll(" ", "~~&");
+        return infoForSending;
     }
 }
