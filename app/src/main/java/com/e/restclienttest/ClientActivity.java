@@ -21,11 +21,28 @@ import org.json.JSONArray;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 // при закрузке приложения запускается данный класс в котором идет загрузка доступных систем
 public class ClientActivity extends AppCompatActivity {
-    static String ip;
-    MyPropertiesHolder propHolder2;
+    // IP сервера
+    static String ipServer;
+    //адресс SAP системы
+    static String selectedSystem;
+    // клиентский ID полученный от сервера
+    static String clientID;
+    // имя пользователя
+    static String username;
+    // пароль
+    static String password;
+    // язык выходных данных
+    static String language;
+    // список модулей
+    static LinkedList<String> modulesList;
+    //
+    static String selectedModule;
+
+    MyPropertiesHolder propertiesHolder;
 
     // вводим IP сервера через клиентский интерфейс
     private void setIp(String message) {
@@ -66,7 +83,7 @@ public class ClientActivity extends AppCompatActivity {
     // подключаемся к серверу и получем список доступных систем
     private void getConnection() {
         try {
-            propHolder2 = new MyPropertiesHolder(this, "test.properties", MyPropertiesHolder.MODE_UPDATE);
+            propertiesHolder = new MyPropertiesHolder(this, "test.properties", MyPropertiesHolder.MODE_UPDATE);
 
 
         } catch (IOException e) {
@@ -74,11 +91,11 @@ public class ClientActivity extends AppCompatActivity {
         }
 
         try {
-            if (propHolder2 != null) {
-                ip = propHolder2.getProperty("ip1");
+            if (propertiesHolder != null) {
+                ipServer = propertiesHolder.getProperty("ip1");
 
                 try {
-                    propHolder2.commit();
+                    propertiesHolder.commit();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -86,14 +103,14 @@ public class ClientActivity extends AppCompatActivity {
                 setIp("Введите IP сервера");
             }
         } catch (NullPointerException e) {
-            ip = " ";
+            ipServer = " ";
         }
 
-        String urlConnection = "http://" + ip + "/rest/rest/wmap/connection";
+        String urlConnection = "http://" + ipServer + "/rest/rest/wmap/connection";
 
         final RequestQueue connectionQueue = Volley.newRequestQueue(this);
         final Intent intentConnection = new Intent(ClientActivity.this, SystemsActivity.class);
-        intentConnection.putExtra("ip", ip);
+//        intentConnection.putExtra("ipServer", ipServer);
 
         final JsonArrayRequest jsonArrayRequestConnection = new JsonArrayRequest(
                 Request.Method.GET,
@@ -127,6 +144,5 @@ public class ClientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection);
         getConnection();
-
     }
 }

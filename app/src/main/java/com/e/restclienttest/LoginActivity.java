@@ -25,12 +25,10 @@ import java.util.ArrayList;
 
 // класс проверки логина и пароля перед входом
 public class LoginActivity extends AppCompatActivity {
+    static String urlAuth;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
+    // входим в систему
+    private void getAuthentification() {
         final EditText etUsername = findViewById(R.id.etUsername);
         final EditText etPassword = findViewById(R.id.etPassword);
         final EditText lang = findViewById(R.id.language);
@@ -40,31 +38,13 @@ public class LoginActivity extends AppCompatActivity {
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String username = etUsername.getText().toString().toUpperCase().trim();
-                final String password = etPassword.getText().toString().trim();
-                final String language = lang.getText().toString().toUpperCase().trim();
+                ClientActivity.username = etUsername.getText().toString().toUpperCase().trim();
+                ClientActivity.password = etPassword.getText().toString().trim();
+                ClientActivity.language = lang.getText().toString().toUpperCase().trim();
+
                 final Intent intentLogin = new Intent(LoginActivity.this, ModulesActivity.class);
-
-                intentLogin.putExtra("userName", username);
-                intentLogin.putExtra("password", password);
-                intentLogin.putExtra("language", language);
-
-                String systemAddress = "";
-                String ip = "";
-                Intent intentSystems = getIntent();
-                for (String name : intentSystems.getExtras().keySet()) {
-                    if (!name.equals("ip")) {
-                        ArrayList<String> value = intentSystems.getStringArrayListExtra(name);
-                        systemAddress = value.get(0);
-                        intentLogin.putExtra("systemAddress", value);
-                    } else {
-                        ip = intentSystems.getStringExtra("ip");
-                        intentLogin.putExtra("ip", ip);
-                    }
-
-                }
-
-                String urlAuth = "http://" + ip + "/rest/rest/wmap" + "/" + systemAddress + "/" + username + "/" + password;
+                urlAuth = "http://" + ClientActivity.ipServer + "/rest/rest/wmap" + "/" + ClientActivity.selectedSystem + "/"
+                        + ClientActivity.username + "/" + ClientActivity.password;
 
                 // GET запрос к серверу для авторизации
                 final JsonArrayRequest jsonArrayRequestLogin = new JsonArrayRequest(
@@ -79,10 +59,10 @@ public class LoginActivity extends AppCompatActivity {
                                         }.getType());
                                 for (int i = 0; i < sapDataList.size(); i++) {
                                     if (sapDataList.get(i).getName().equals("REPI2")) {
-                                        intentLogin.putExtra(sapDataList.get(i).getName(), sapDataList.get(i).getValues());
+                                        ClientActivity.modulesList = sapDataList.get(i).getValues();
                                     }
                                     if (sapDataList.get(i).getName().equals("clientNumber")) {
-                                        intentLogin.putExtra(sapDataList.get(i).getName(), sapDataList.get(i).getValues().get(0));
+                                        ClientActivity.clientID = sapDataList.get(i).getValues().get(0);
                                     }
                                 }
                                 LoginActivity.this.startActivity(intentLogin);
@@ -103,5 +83,13 @@ public class LoginActivity extends AppCompatActivity {
                 loginQueue.add(jsonArrayRequestLogin);
             }
         });
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        getAuthentification();
     }
 }

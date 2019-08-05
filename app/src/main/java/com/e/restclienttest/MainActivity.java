@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         login = intentMain.getStringExtra("userName");
         password = intentMain.getStringExtra("password");
         number = intentMain.getStringExtra("clientNumber");
-        ip = intentMain.getStringExtra("ip");
+        ip = intentMain.getStringExtra("ipServer");
 
         if (!intentMain.getStringExtra("table").equals(" ")) {
             table = intentMain.getStringExtra("table");
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 //        // составляем url с параметрами идентификации(применим после настройки сервера)
 //        StringBuilder urlSB = new StringBuilder();
 //
-//        urlSB.append("http://").append(ip).append("/rest/rest/wmap").append("/").append(systemAddress)
+//        urlSB.append("http://").append(ipServer).append("/rest/rest/wmap").append("/").append(systemAddress)
 //                .append("/").append(login).append("/").append(password).append("/").append(sessionNumber);
 //
 //        String urlDeleteSession = String.valueOf(urlSB);
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //        urlSB = new StringBuilder();
 //
-//        urlSB.append("http://").append(ip).append("/rest/rest/wmap").append("/").append(systemAddress)
+//        urlSB.append("http://").append(ipServer).append("/rest/rest/wmap").append("/").append(systemAddress)
 //                .append("/").append(login).append("/").append(password).append("/").append(number);
 //
 //        String urlDeleteSyst = String.valueOf(urlSB);
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
 //        // составляем url с параметрами идентификации(применим после настройки сервера)
 //        StringBuilder urlSB = new StringBuilder();
 //
-//        urlSB.append("http://").append(ip).append("/rest/rest/wmap").append("/").append(systemAddress)
+//        urlSB.append("http://").append(ipServer).append("/rest/rest/wmap").append("/").append(systemAddress)
 //                .append("/").append(login).append("/").append(password).append("/").append(sessionNumber)
 //                .append("/").append(table).append("/").append(fieldsQuan).append("/").append(language)
 //                .append("/").append(where).append("/").append(order).append("/").append(group)

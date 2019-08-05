@@ -49,7 +49,7 @@ public class ParamsActivity extends AppCompatActivity {
                 final String group = etGroup.getText().toString().toUpperCase().trim();
                 final String fieldsNames = etFieldsNames.getText().toString().toUpperCase().trim();
                 final String clientNumber = intentModules.getStringExtra("clientNumber");
-                final String ip = intentModules.getStringExtra("ip");
+                final String ip = intentModules.getStringExtra("ipServer");
 
                 // создал проверочную мапу для проверки введенных парметров
                 LinkedHashMap<String, String> chekMap = new LinkedHashMap<>();
@@ -64,7 +64,7 @@ public class ParamsActivity extends AppCompatActivity {
                 chekMap.put("group", group);
                 chekMap.put("fieldsNames", fieldsNames);
                 chekMap.put("clientNumber", clientNumber);
-                chekMap.put("ip", ip);
+                chekMap.put("ipServer", ip);
 
                 // заполняем параметрами мапу, которая передаст их основному классу исполнения
                 Intent intentParams = new Intent(ParamsActivity.this, MainActivity.class);

@@ -16,31 +16,15 @@ import java.util.LinkedHashMap;
 
 public class SystemsActivity extends AppCompatActivity {
 
-    // список имен доступных систем
-    String[] systemsNames;
-
-    // ip сервера
-    String ip;
-
-    // список всех систем
-    LinkedHashMap<String, ArrayList<String>> systlist;
-
-    // текст для выбора модуля
-    TextView selection;
-
     // заполняем список модулей имеющимися на сервере
     public String[] getAllSystemsNames() {
         Intent intentConnection = getIntent();
-        String[] systems = new String[intentConnection.getExtras().keySet().size()];
+        String[] systems = new String[intentConnection.getExtras().keySet().size() + 1];
         systems[0] = "_________________";
         int id = 1;
         for (String name : intentConnection.getExtras().keySet()) {
-            if (!name.equals("ip")) {
-                systems[id] = name;
-                id++;
-            } else {
-                ip = intentConnection.getStringExtra("ip");
-            }
+            systems[id] = name;
+            id++;
         }
         return systems;
     }
@@ -56,15 +40,17 @@ public class SystemsActivity extends AppCompatActivity {
         return systList;
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_systems);
+    // записываем выбранную систему и переходим к аутентификации
+    public void chooseSystem() {
         Spinner systemSelector = findViewById(R.id.systems);
-        selection = findViewById(R.id.selection_sys);
-        systemsNames = getAllSystemsNames();
-        systlist = getAllSystems();
+        // текст для выбора модуля
+        TextView selection = findViewById(R.id.selection_sys);
+        // список имен доступных систем
+        String[] systemsNames = getAllSystemsNames();
+        // список всех систем
+        final LinkedHashMap<String, ArrayList<String>> systlist = getAllSystems();
         selection.setText("System: ");
+        final String ip = ClientActivity.ipServer;
 
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, systemsNames);
@@ -81,9 +67,9 @@ public class SystemsActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 // Получаем выбранную систему
-                String systName = (String) parent.getItemAtPosition(position);
+                String selectedSyst = (String) parent.getItemAtPosition(position);
 
-                if ("_________________".equals(systName)) {
+                if ("_________________".equals(selectedSyst)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SystemsActivity.this);
                     builder.setMessage("Выберите систему")
                             .setNeutralButton("OK", null)
@@ -91,11 +77,9 @@ public class SystemsActivity extends AppCompatActivity {
                             .show();
                 } else {
                     final Intent intentForLogin = new Intent(SystemsActivity.this, LoginActivity.class);
-                    intentForLogin.putExtra(systName, systlist.get(systName));
-                    intentForLogin.putExtra("ip", ip);
+                    ClientActivity.selectedSystem = systlist.get(selectedSyst).get(0);
                     SystemsActivity.this.startActivity(intentForLogin);
                 }
-
             }
 
             @Override
@@ -104,6 +88,12 @@ public class SystemsActivity extends AppCompatActivity {
         };
         systemSelector.setOnItemSelectedListener(systemSelectedListener);
 
+    }
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_systems);
+        chooseSystem();
     }
 }

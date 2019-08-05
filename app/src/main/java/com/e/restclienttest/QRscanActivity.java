@@ -41,7 +41,7 @@ public class QRscanActivity extends AppCompatActivity {
     CameraSource cameraSource;
 
     String where;
-    String table = "QR";
+    String table = "QR&1";
     String fieldsQuan = "1";
     String language;
     String order = "~~~";
@@ -87,20 +87,20 @@ public class QRscanActivity extends AppCompatActivity {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        // TODO
+                        textResult.setText("QR передан успешно");
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e("Rest response", error.toString());
+                        textResult.setText("Ошибка при передаче");
                     }
                 }
         );
 
         requestQueue.add(jsonArrayRequest);
         if (!(jsonArrayRequest.getUrl() == null)) {
-            textResult.setText("QR передан успешно");
             CountDownTimer timer = new CountDownTimer(3000, 1000) {
 
                 @Override
@@ -152,7 +152,7 @@ public class QRscanActivity extends AppCompatActivity {
         language = intentMain.getStringExtra("language");
         systemAddress = intentMain.getStringExtra("systemAddress");
         number = intentMain.getStringExtra("clientNumber");
-        ip = intentMain.getStringExtra("ip");
+        ip = intentMain.getStringExtra("ipServer");
 
         cameraPreview = findViewById(R.id.cameraPreview);
         textResult = findViewById(R.id.txtResult);
