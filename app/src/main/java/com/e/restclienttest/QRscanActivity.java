@@ -138,7 +138,6 @@ public class QRscanActivity extends AppCompatActivity {
             }
             break;
         }
-
     }
 
     @Override

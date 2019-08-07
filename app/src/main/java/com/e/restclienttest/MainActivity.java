@@ -38,62 +38,21 @@ public class MainActivity extends AppCompatActivity {
     String order; // = " ";
     String group; // = " ";
     String fieldNames; //  = " ";
-    String url;
+
 
     // параметры клиента
-    String systemAddress;
-    String login;
-    String password;
-    String number;
     String sessionNumber;
-    String ip;
-
 
     //сюда будет приходить Sap ответ с наполненными данными
     ArrayList<Mapa> sapDataList = new ArrayList<>();
-
 
 
     // метод вызывется при создании(вызове) данного Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // передаем введенные данные
-        Intent intentMain = getIntent();
-        systemAddress = intentMain.getStringExtra("systemAddress");
-        login = intentMain.getStringExtra("userName");
-        password = intentMain.getStringExtra("password");
-        number = intentMain.getStringExtra("clientNumber");
-        ip = intentMain.getStringExtra("ipServer");
-
-        if (!intentMain.getStringExtra("table").equals(" ")) {
-            table = intentMain.getStringExtra("table");
-        } else table = intentMain.getStringExtra("table").replaceAll(" ", "~~~");
-
-        if (!intentMain.getStringExtra("fieldsQuan").equals(" ")) {
-            fieldsQuan = intentMain.getStringExtra("fieldsQuan");
-        } else fieldsQuan = intentMain.getStringExtra("fieldsQuan").replaceAll(" ", "~~~");
-
-        language = intentMain.getStringExtra("language");
-
-        if (!intentMain.getStringExtra("where").equals(" ")) {
-            where = intentMain.getStringExtra("where").replaceAll(" ", "~~&");
-        } else where = intentMain.getStringExtra("where").replaceAll(" ", "~~~");
-
-        if (!intentMain.getStringExtra("order").equals(" ")) {
-            order = intentMain.getStringExtra("order").replaceAll(" ", "~~&");
-        } else order = intentMain.getStringExtra("order").replaceAll(" ", "~~~");
-
-        if (!intentMain.getStringExtra("group").equals(" ")) {
-            group = intentMain.getStringExtra("group").replaceAll(" ", "~~&");
-        } else group = intentMain.getStringExtra("group").replaceAll(" ", "~~~");
-
-        if (!intentMain.getStringExtra("fieldsNames").equals(" ")) {
-            fieldNames = intentMain.getStringExtra("fieldsNames").replaceAll(" ", "~~&");
-        } else fieldNames = intentMain.getStringExtra("fieldsNames").replaceAll(" ", "~~~");
-
         createSys();
+
     }
 
 //    @Override
@@ -202,29 +161,30 @@ public class MainActivity extends AppCompatActivity {
 
 
     // кидает запрос серверу и получает ответ заполненный метод который заполняется данными из ответа
-    public void getConnection(final String systemAddress, final String login, final String password, final String number,
-                              final String table, final String fieldsQuan, final String language, final String where,
-                              final String order, final String group, final String fieldNames) {
+    public void getConnection(
+            final String table, final String fieldsQuan, final String language, final String where,
+            final String order, final String group, final String fieldNames) {
 
-
+        setParams();
         // составляем url с параметрами идентификации(применим после настройки сервера)
         StringBuilder urlSB = new StringBuilder();
 
-        urlSB.append("http://").append(ip).append("/rest/rest/wmap").append("/").append(systemAddress)
-                .append("/").append(login).append("/").append(password).append("/").append(number)
+        urlSB.append("http://").append(ClientActivity.ipServer).append("/rest/rest/wmap").append("/")
+                .append(ClientActivity.selectedSystem).append("/").append(ClientActivity.username)
+                .append("/").append(ClientActivity.password).append("/").append(ClientActivity.clientID)
                 .append("/").append(table).append("/").append(fieldsQuan).append("/").append(language)
-                .append("/").append(where).append("/").append(order).append("/").append(group)
-                .append("/").append(fieldNames);
+                .append("/").append(where).append("/").append(order).append("/").append(group).append("/")
+                .append(fieldNames);
 
 
         // получаем готвый url с внесенными параметрами
-        url = urlSB.toString();
+        ClientActivity.url = urlSB.toString();
 
         // GET запрос к серверу
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
-                url,
+                ClientActivity.url,
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -236,12 +196,13 @@ public class MainActivity extends AppCompatActivity {
                         for (int i = 0; i < sapDataList.size(); i++) {
                             tempMap.put(sapDataList.get(i).getName(), sapDataList.get(i).getValues());
                             if (sapDataList.get(i).getName().equals("clientNumber")) {
+                                ClientActivity.clientID = sapDataList.get(i).getValues().get(0);
                                 sessionNumber = sapDataList.get(i).getValues().get(0);
                             }
                         }
-
-
-                        visualisation(table, fieldsQuan, language, where, order, group, fieldNames, tempMap);
+                        TableMainLayout tab = new TableMainLayout(MainActivity.this, tempMap);
+                        setContentView(tab);
+//                        visualisation(table, fieldsQuan, language, where, order, group, fieldNames, tempMap);
 //                        dataSetList.get(table + fieldsQuan + language + where + order + group + fieldNames).keyVisualisation();
                     }
                 },
@@ -257,21 +218,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     // будет создавать экземпляр класса dataSet и складываться в map где ключом будет идентификатор клиента
-    public void createDataSet(String urlClient, String login, String password, String number, String table,
+    public void createDataSet(String table,
                               String fieldsQuan, String language, String where, String order,
                               String group, String fieldNames) {
 
 
         DataSet dataSet = new DataSet();
         dataSetList.put(table + fieldsQuan + language + where + order + group + fieldNames, dataSet);
-        getConnection(urlClient, login, password, number, table, fieldsQuan, language, where, order,
+        getConnection(table, fieldsQuan, language, where, order,
                 group, fieldNames);
     }
 
 
     // создает клиента
     public void createSys() {
-        createDataSet(systemAddress, login, password, number, table, fieldsQuan, language, where, order, group, fieldNames);
+        createDataSet(table, fieldsQuan, language, where, order, group, fieldNames);
     }
 
 
@@ -282,6 +243,8 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout linear = findViewById(R.id.linear);
         TableMainLayout tab = new TableMainLayout(this, tempMap);
         setContentView(tab);
+
+
 //        for (String key : tempMap.keySet()) {
 //            //берем наш кастомный лейаут находим через него все наши кнопки и едит тексты, задаем нужные данные
 //            View view = getLayoutInflater().inflate(R.layout.custom_edittext_layout, null);
@@ -294,6 +257,40 @@ public class MainActivity extends AppCompatActivity {
 //            linear.addView(view);
 //        }
 //        dataSetList.get(table + fieldsQuan + language + where + order + group + fieldNames).setLinear(linear);
+    }
+
+    // метод передачи введенных параметров параметров выводимой таблицы
+    public void setParams() {
+
+        // передаем введенные данные
+        Intent intentMain = getIntent();
+
+        if (!intentMain.getStringExtra("table").equals(" ")) {
+            table = intentMain.getStringExtra("table");
+        } else table = intentMain.getStringExtra("table").replaceAll(" ", "~~~");
+
+        if (!intentMain.getStringExtra("fieldsQuan").equals(" ")) {
+            fieldsQuan = intentMain.getStringExtra("fieldsQuan");
+        } else fieldsQuan = intentMain.getStringExtra("fieldsQuan").replaceAll(" ", "~~~");
+
+        language = intentMain.getStringExtra("language");
+
+        if (!intentMain.getStringExtra("where").equals(" ")) {
+            where = intentMain.getStringExtra("where").replaceAll(" ", "~~&");
+        } else where = intentMain.getStringExtra("where").replaceAll(" ", "~~~");
+
+        if (!intentMain.getStringExtra("order").equals(" ")) {
+            order = intentMain.getStringExtra("order").replaceAll(" ", "~~&");
+        } else order = intentMain.getStringExtra("order").replaceAll(" ", "~~~");
+
+        if (!intentMain.getStringExtra("group").equals(" ")) {
+            group = intentMain.getStringExtra("group").replaceAll(" ", "~~&");
+        } else group = intentMain.getStringExtra("group").replaceAll(" ", "~~~");
+
+        if (!intentMain.getStringExtra("fieldsNames").equals(" ")) {
+            fieldNames = intentMain.getStringExtra("fieldsNames").replaceAll(" ", "~~&");
+        } else fieldNames = intentMain.getStringExtra("fieldsNames").replaceAll(" ", "~~~");
+
     }
 
 

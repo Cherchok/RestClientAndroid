@@ -76,10 +76,12 @@ public class TableMainLayout extends RelativeLayout {
                 tableMap.put(name, dataMap.get(name));
             }
         }
+        dataMap = null;
         this.datamap = tableMap;
-        this.headers = new String[tableMap.keySet().size()];
+        tableMap = null;
+        this.headers = new String[datamap.keySet().size()];
         int i = 0;
-        for (String name : tableMap.keySet()) {
+        for (String name : datamap.keySet()) {
             headers[i] = name;
             i++;
         }
@@ -232,10 +234,10 @@ public class TableMainLayout extends RelativeLayout {
     // generate table row of table C and table D
     private void generateTableC_AndTable_D() {
 
-        // just seeing some header cell width
-        for (int x = 0; x < this.headerCellsWidth.length; x++) {
-            Log.v("TableMainLayout.java", this.headerCellsWidth[x] + "");
-        }
+//        // just seeing some header cell width
+//        for (int x = 0; x < this.headerCellsWidth.length; x++) {
+//            Log.v("TableMainLayout.java", this.headerCellsWidth[x] + "");
+//        }
 
         for (String name : datamap.keySet()) {
             if (headers[0].equals(name)) {

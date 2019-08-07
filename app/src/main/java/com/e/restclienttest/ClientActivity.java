@@ -21,9 +21,10 @@ import org.json.JSONArray;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
-// при закрузке приложения запускается данный класс в котором идет загрузка доступных систем
+// при загрузке приложения запускается данный класс в котором идет загрузка доступных систем
 public class ClientActivity extends AppCompatActivity {
     // IP сервера
     static String ipServer;
@@ -38,11 +39,26 @@ public class ClientActivity extends AppCompatActivity {
     // язык выходных данных
     static String language;
     // список модулей
-    static LinkedList<String> modulesList;
-    //
+    static LinkedList<String> modulesList = new LinkedList<>();
+    // модуль с которым производится работа
     static String selectedModule;
-
+    // список id модулей
+    static LinkedList<String> moduleIDlist = new LinkedList<>();
+    // список доступных систем на сервере
+    static LinkedHashMap<String, LinkedList> systemsList = new LinkedHashMap<>();
+    //    // список запросов к серверу с данными
+    static LinkedHashMap<String, DataSet> dataSetList = new LinkedHashMap<>();
+    // url get-запроса в SAP через сервер
+    static String url;
+    // хранилище для ip сервера
     MyPropertiesHolder propertiesHolder;
+
+    // дессерилазция json response
+    public static ArrayList<Mapa> deserialization(JSONArray response) {
+        return (new Gson()).fromJson(response.toString(),
+                new TypeToken<ArrayList<Mapa>>() {
+                }.getType());
+    }
 
     // вводим IP сервера через клиентский интерфейс
     private void setIp(String message) {
@@ -124,6 +140,7 @@ public class ClientActivity extends AppCompatActivity {
                                 }.getType());
                         for (int i = 0; i < sapDataList.size(); i++) {
                             intentConnection.putExtra(sapDataList.get(i).getName(), sapDataList.get(i).getValues());
+                            systemsList.put(sapDataList.get(i).getName(), sapDataList.get(i).getValues());
                         }
                         ClientActivity.this.startActivity(intentConnection);
                     }

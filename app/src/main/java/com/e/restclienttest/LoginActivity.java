@@ -15,8 +15,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 
@@ -26,6 +24,25 @@ import java.util.ArrayList;
 // класс проверки логина и пароля перед входом
 public class LoginActivity extends AppCompatActivity {
     static String urlAuth;
+
+    //считываем данные из syst
+    private void readSyst(ArrayList<Mapa> sapDataList) {
+        //считываем список доступных приложений и номер клиента, передаваемый от сервера
+        for (int i = 0; i < sapDataList.size(); i++) {
+            if (sapDataList.get(i).getName().equals("REPI2")) {
+                ClientActivity.modulesList = sapDataList.get(i).getValues();
+                ClientActivity.modulesList = sapDataList.get(i).getValues();
+            }
+            if (sapDataList.get(i).getName().equals("clientNumber")) {
+                ClientActivity.clientID = sapDataList.get(i).getValues().get(0);
+
+            }
+            if (sapDataList.get(i).getName().equals("CPROG")) {
+                ClientActivity.moduleIDlist = sapDataList.get(i).getValues();
+            }
+            //TODO
+        }
+    }
 
     // входим в систему
     private void getAuthentification() {
@@ -41,10 +58,9 @@ public class LoginActivity extends AppCompatActivity {
                 ClientActivity.username = etUsername.getText().toString().toUpperCase().trim();
                 ClientActivity.password = etPassword.getText().toString().trim();
                 ClientActivity.language = lang.getText().toString().toUpperCase().trim();
-
                 final Intent intentLogin = new Intent(LoginActivity.this, ModulesActivity.class);
                 urlAuth = "http://" + ClientActivity.ipServer + "/rest/rest/wmap" + "/" + ClientActivity.selectedSystem + "/"
-                        + ClientActivity.username + "/" + ClientActivity.password;
+                        + ClientActivity.username + "/" + ClientActivity.password + "/" + ClientActivity.language;
 
                 // GET запрос к серверу для авторизации
                 final JsonArrayRequest jsonArrayRequestLogin = new JsonArrayRequest(
@@ -54,17 +70,8 @@ public class LoginActivity extends AppCompatActivity {
                         new Response.Listener<JSONArray>() {
                             @Override
                             public void onResponse(JSONArray response) {
-                                ArrayList<Mapa> sapDataList = (new Gson()).fromJson(response.toString(),
-                                        new TypeToken<ArrayList<Mapa>>() {
-                                        }.getType());
-                                for (int i = 0; i < sapDataList.size(); i++) {
-                                    if (sapDataList.get(i).getName().equals("REPI2")) {
-                                        ClientActivity.modulesList = sapDataList.get(i).getValues();
-                                    }
-                                    if (sapDataList.get(i).getName().equals("clientNumber")) {
-                                        ClientActivity.clientID = sapDataList.get(i).getValues().get(0);
-                                    }
-                                }
+                                ArrayList<Mapa> sapDataList = ClientActivity.deserialization(response);
+                                readSyst(sapDataList);
                                 LoginActivity.this.startActivity(intentLogin);
                             }
                         },

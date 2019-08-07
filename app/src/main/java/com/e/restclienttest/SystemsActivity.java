@@ -9,51 +9,30 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 public class SystemsActivity extends AppCompatActivity {
 
     // заполняем список модулей имеющимися на сервере
     public String[] getAllSystemsNames() {
-        Intent intentConnection = getIntent();
-        String[] systems = new String[intentConnection.getExtras().keySet().size() + 1];
-        systems[0] = "_________________";
+        String[] systemsNames = new String[ClientActivity.systemsList.size() + 1];
+        systemsNames[0] = "_________________";
         int id = 1;
-        for (String name : intentConnection.getExtras().keySet()) {
-            systems[id] = name;
+        for (String name : ClientActivity.systemsList.keySet()) {
+            systemsNames[id] = name;
             id++;
         }
-        return systems;
-    }
-
-    // получаем мапу всех систем для доступа к ним. Доступ осуществляется по имени путем выбора
-    // имени в селекционном меню
-    public LinkedHashMap<String, ArrayList<String>> getAllSystems() {
-        LinkedHashMap<String, ArrayList<String>> systList = new LinkedHashMap<>();
-        Intent intentConnection = getIntent();
-        for (String name : intentConnection.getExtras().keySet()) {
-            systList.put(name, intentConnection.getStringArrayListExtra(name));
-        }
-        return systList;
+        return systemsNames;
     }
 
     // записываем выбранную систему и переходим к аутентификации
-    public void chooseSystem() {
+    public void startSelectedSystem() {
         Spinner systemSelector = findViewById(R.id.systems);
-        // текст для выбора модуля
-        TextView selection = findViewById(R.id.selection_sys);
         // список имен доступных систем
         String[] systemsNames = getAllSystemsNames();
-        // список всех систем
-        final LinkedHashMap<String, ArrayList<String>> systlist = getAllSystems();
-        selection.setText("System: ");
-        final String ip = ClientActivity.ipServer;
 
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, systemsNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
+                systemsNames);
 
         // Определяем разметку для использования при выборе элемента
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -67,9 +46,9 @@ public class SystemsActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 // Получаем выбранную систему
-                String selectedSyst = (String) parent.getItemAtPosition(position);
+                String selectedSystName = (String) parent.getItemAtPosition(position);
 
-                if ("_________________".equals(selectedSyst)) {
+                if ("_________________".equals(selectedSystName)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SystemsActivity.this);
                     builder.setMessage("Выберите систему")
                             .setNeutralButton("OK", null)
@@ -77,7 +56,7 @@ public class SystemsActivity extends AppCompatActivity {
                             .show();
                 } else {
                     final Intent intentForLogin = new Intent(SystemsActivity.this, LoginActivity.class);
-                    ClientActivity.selectedSystem = systlist.get(selectedSyst).get(0);
+                    ClientActivity.selectedSystem = (String) ClientActivity.systemsList.get(selectedSystName).get(0);
                     SystemsActivity.this.startActivity(intentForLogin);
                 }
             }
@@ -87,13 +66,12 @@ public class SystemsActivity extends AppCompatActivity {
             }
         };
         systemSelector.setOnItemSelectedListener(systemSelectedListener);
-
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_systems);
-        chooseSystem();
+        startSelectedSystem();
     }
 }
