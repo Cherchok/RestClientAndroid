@@ -40,8 +40,6 @@ public class TableMainLayout extends RelativeLayout {
     ScrollView scrollViewD;
     // контекст
     Context context;
-
-//    List<LinkedList<String>> tableObjects;
     // ширина заголовков
     int[] headerCellsWidth;
 
@@ -52,8 +50,6 @@ public class TableMainLayout extends RelativeLayout {
         this.context = context;
         setTableData(dataMap);
         setHeaders();
-
-//        tableObjects = this.fillTable();
 
         // инициализация основных компонентов (TableLayouts, HorizontalScrollView, ScrollView)
         this.initComponents();
@@ -134,18 +130,6 @@ public class TableMainLayout extends RelativeLayout {
         this.headerCellsWidth = new int[headers.length];
     }
 
-//    // this is just the sample data
-//    List<LinkedList<String>> fillTable() {
-//
-//        List<LinkedList<String>> headersData = new LinkedList<>();
-//
-//        for (String name : datamap.keySet()) {
-//            LinkedList<String> headerData = datamap.get(name);
-//            headersData.add(headerData);
-//        }
-//        return headersData;
-//    }
-
     // инициализация компонентов
     private void initComponents() {
 
@@ -174,7 +158,7 @@ public class TableMainLayout extends RelativeLayout {
         this.scrollViewD.setId(4);
     }
 
-    // set tags for some horizontal and vertical scroll view
+    // установка названий тэгов для прокруток
     private void setScrollViewAndHorizontalScrollViewTag() {
 
         this.horizontalScrollViewB.setTag("horizontal scroll view b");
@@ -184,11 +168,11 @@ public class TableMainLayout extends RelativeLayout {
         this.scrollViewD.setTag("scroll view d");
     }
 
-    // we add the components here in our TableMainLayout
+    // добавление компонентов в TableMainLayout
     private void addComponentToMainLayout() {
 
-        // RelativeLayout params were very useful here
-        // the addRule method is the key to arrange the components properly
+        // RelativeLayout params очень полезны здесь
+        // метод addRule является ключом для правильного расположения компонентов
         RelativeLayout.LayoutParams componentB_Params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         componentB_Params.addRule(RelativeLayout.RIGHT_OF, this.tableA.getId());
 
@@ -199,35 +183,35 @@ public class TableMainLayout extends RelativeLayout {
         componentD_Params.addRule(RelativeLayout.RIGHT_OF, this.scrollViewC.getId());
         componentD_Params.addRule(RelativeLayout.BELOW, this.horizontalScrollViewB.getId());
 
-        // 'this' is a relative layout,
-        // we extend this table layout as relative layout as seen during the creation of this class
+        // 'this' - это относительный макет,
+        // мы расширяем этот макет таблицы как относительный макет, как видно при создании этого класса
         this.addView(this.tableA);
         this.addView(this.horizontalScrollViewB, componentB_Params);
         this.addView(this.scrollViewC, componentC_Params);
         this.addView(this.scrollViewD, componentD_Params);
-
     }
 
-
+    // добавление строк в таблицу А
     private void addTableRowToTableA() {
         this.tableA.addView(this.componentATableRow());
     }
 
+    // добавление строк в таблицу В
     private void addTableRowToTableB() {
         this.tableB.addView(this.componentBTableRow());
     }
 
-    // generate table row of table A
+    // заполнение ячеек таблицы A
     TableRow componentATableRow() {
-
         TableRow componentATableRow = new TableRow(this.context);
         TextView textView = this.headerTextView(this.headers[0]);
+        textView.setTextColor(Color.BLACK);
+        componentATableRow.setBackgroundColor(Color.BLACK);
         componentATableRow.addView(textView);
-
         return componentATableRow;
     }
 
-    // generate table row of table B
+    // заполнение ячеек таблицы B
     TableRow componentBTableRow() {
 
         TableRow componentBTableRow = new TableRow(this.context);
@@ -239,15 +223,17 @@ public class TableMainLayout extends RelativeLayout {
         for (int x = 0; x < (headerFieldCount - 1); x++) {
             TextView textView = this.headerTextView(this.headers[x + 1]);
             textView.setLayoutParams(params);
+            textView.setTextColor(Color.BLACK);
+            componentBTableRow.setBackgroundColor(Color.BLACK);
             componentBTableRow.addView(textView);
         }
 
         return componentBTableRow;
     }
 
-    // generate table row of table C and table D
+    // заполнение  ячеек таблиц С и D
     private void generateTableC_AndTable_D() {
-
+        // заполнение таблицы С
         for (String name : datamap.keySet()) {
             if (headers[0].equals(name)) {
                 for (int columnNum2 = 0; columnNum2 < datamap.get(name).size(); columnNum2++) {
@@ -258,14 +244,15 @@ public class TableMainLayout extends RelativeLayout {
             }
         }
 
+        // заполнение таблицы D
         for (int columnNum = 0; columnNum < datamap.get(headers[0]).size(); columnNum++) {
-            TableRow tableRowForTableD = this.taleRowForTableD(columnNum);
+            TableRow tableRowForTableD = this.tableRowForTableD(columnNum);
             tableRowForTableD.setBackgroundColor(Color.LTGRAY);
             this.tableD.addView(tableRowForTableD);
         }
     }
 
-    // a TableRow for table C
+    // генерирование ячеек для C
     TableRow tableRowForTableC(String column) {
 
         TableRow.LayoutParams params = new TableRow.LayoutParams(this.headerCellsWidth[0], LayoutParams.MATCH_PARENT);
@@ -277,8 +264,8 @@ public class TableMainLayout extends RelativeLayout {
         return tableRowForTableC;
     }
 
-
-    TableRow taleRowForTableD(int columnNum) {
+    //генерирование ячеек для D
+    TableRow tableRowForTableD(int columnNum) {
         TableRow taleRowForTableD = new TableRow(this.context);
 
         int size = datamap.keySet().size();
@@ -301,10 +288,8 @@ public class TableMainLayout extends RelativeLayout {
         return taleRowForTableD;
     }
 
-
-    // table cell standard TextView
+    // стандартный текстовый вид ячейки таблицы
     TextView bodyTextView(String label) {
-
         TextView bodyTextView = new TextView(this.context);
         bodyTextView.setBackgroundColor(Color.WHITE);
         bodyTextView.setText(label);
@@ -314,11 +299,11 @@ public class TableMainLayout extends RelativeLayout {
         return bodyTextView;
     }
 
-    // header standard TextView
+    // стандартный текстовый вид заголовков таблицы
     TextView headerTextView(String label) {
 
         TextView headerTextView = new TextView(this.context);
-        headerTextView.setBackgroundColor(Color.WHITE);
+        headerTextView.setBackgroundColor(Color.LTGRAY);
         headerTextView.setText(label);
         headerTextView.setGravity(Gravity.CENTER);
         headerTextView.setPadding(5, 5, 5, 5);
@@ -326,7 +311,7 @@ public class TableMainLayout extends RelativeLayout {
         return headerTextView;
     }
 
-    // resizing TableRow height starts here
+    // изменение размера высоты TableRow
     void resizeHeaderHeight() {
 
         TableRow productNameHeaderTableRow = (TableRow) this.tableA.getChildAt(0);
@@ -341,6 +326,7 @@ public class TableMainLayout extends RelativeLayout {
         this.matchLayoutHeight(tableRow, finalHeight);
     }
 
+    // ширина заголовков
     void getTableRowHeaderCellWidth() {
 
         int tableAChildCount = ((TableRow) this.tableA.getChildAt(0)).getChildCount();
@@ -357,7 +343,7 @@ public class TableMainLayout extends RelativeLayout {
         }
     }
 
-    // resize body table row height
+    // изменить размер высоты строки таблицы
     void resizeBodyTableRowHeight() {
 
         int tableC_ChildCount = this.tableC.getChildCount();
@@ -378,8 +364,8 @@ public class TableMainLayout extends RelativeLayout {
 
     }
 
-    // match all height in a table row
-    // to make a standard TableRow height
+    // сопоставление всех высот в строке таблицы
+    // чтобы сделать стандартную высоту TableRow
     private void matchLayoutHeight(TableRow tableRow, int height) {
 
         int tableRowChildCount = tableRow.getChildCount();
@@ -409,7 +395,7 @@ public class TableMainLayout extends RelativeLayout {
 
     }
 
-    // check if the view has the highest height in a TableRow
+    // проверка, имеет ли вид наибольшую высоту в TableRow
     private boolean isTheHeighestLayout(TableRow tableRow, int layoutPosition) {
 
         int tableRowChildCount = tableRow.getChildCount();
@@ -429,19 +415,19 @@ public class TableMainLayout extends RelativeLayout {
         return heighestViewPosition == layoutPosition;
     }
 
-    // read a view's height
+    // считывание высот вьюх
     private int viewHeight(View view) {
         view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         return view.getMeasuredHeight();
     }
 
-    // read a view's width
+    // считывание ширины вьюх
     private int viewWidth(View view) {
         view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         return view.getMeasuredWidth();
     }
 
-    // horizontal scroll view custom class
+    // горизонтальный вид прокрутки пользовательский класс
     class MyHorizontalScrollView extends HorizontalScrollView {
 
         public MyHorizontalScrollView(Context context) {
@@ -461,7 +447,7 @@ public class TableMainLayout extends RelativeLayout {
 
     }
 
-    // scroll view custom class
+    // верикальный вид прокрутки пользовательский класс
     class MyScrollView extends ScrollView {
 
         public MyScrollView(Context context) {
