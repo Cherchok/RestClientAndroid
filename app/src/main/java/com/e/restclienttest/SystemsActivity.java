@@ -12,7 +12,14 @@ import android.widget.Spinner;
 
 public class SystemsActivity extends AppCompatActivity {
 
-    // заполняем список модулей имеющимися на сервере
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_systems);
+        SelectSystem();
+    }
+
+    // получение списка доступных имен систем SAP
     public String[] getAllSystemsNames() {
         String[] systemsNames = new String[ClientActivity.systemsList.size() + 1];
         systemsNames[0] = "_________________";
@@ -24,8 +31,8 @@ public class SystemsActivity extends AppCompatActivity {
         return systemsNames;
     }
 
-    // записываем выбранную систему и переходим к аутентификации
-    public void startSelectedSystem() {
+    // выбор системы SAP из списка
+    public void SelectSystem() {
         Spinner systemSelector = findViewById(R.id.systems);
         // список имен доступных систем
         String[] systemsNames = getAllSystemsNames();
@@ -44,21 +51,7 @@ public class SystemsActivity extends AppCompatActivity {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                // Получаем выбранную систему
-                String selectedSystName = (String) parent.getItemAtPosition(position);
-
-                if ("_________________".equals(selectedSystName)) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(SystemsActivity.this);
-                    builder.setMessage("Выберите систему")
-                            .setNeutralButton("OK", null)
-                            .create()
-                            .show();
-                } else {
-                    final Intent intentForLogin = new Intent(SystemsActivity.this, LoginActivity.class);
-                    ClientActivity.selectedSystem = (String) ClientActivity.systemsList.get(selectedSystName).get(0);
-                    SystemsActivity.this.startActivity(intentForLogin);
-                }
+                startSelectedSystem(parent, position);
             }
 
             @Override
@@ -68,10 +61,21 @@ public class SystemsActivity extends AppCompatActivity {
         systemSelector.setOnItemSelectedListener(systemSelectedListener);
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_systems);
-        startSelectedSystem();
+    // запуск выбранной системы
+    private void startSelectedSystem(AdapterView<?> parent, int position) {
+        // Получаем выбранную систему
+        String selectedSystName = (String) parent.getItemAtPosition(position);
+
+        if ("_________________".equals(selectedSystName)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(SystemsActivity.this);
+            builder.setMessage("Выберите систему")
+                    .setNeutralButton("OK", null)
+                    .create()
+                    .show();
+        } else {
+            final Intent intentForLogin = new Intent(SystemsActivity.this, LoginActivity.class);
+            ClientActivity.selectedSystem = (String) ClientActivity.systemsList.get(selectedSystName).get(0);
+            SystemsActivity.this.startActivity(intentForLogin);
+        }
     }
 }

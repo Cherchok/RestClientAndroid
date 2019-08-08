@@ -1,12 +1,15 @@
 package com.e.restclienttest;
 
 import android.app.AlertDialog;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
 import android.util.Log;
+
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -42,22 +45,57 @@ public class ClientActivity extends AppCompatActivity {
     static LinkedList<String> modulesList = new LinkedList<>();
     // модуль с которым производится работа
     static String selectedModule;
+    // id модуля с которым производится работа
+    static String selectedModuleID;
     // список id модулей
     static LinkedList<String> moduleIDlist = new LinkedList<>();
     // список доступных систем на сервере
     static LinkedHashMap<String, LinkedList> systemsList = new LinkedHashMap<>();
-    //    // список запросов к серверу с данными
+    // список запросов к серверу с данными
     static LinkedHashMap<String, DataSet> dataSetList = new LinkedHashMap<>();
-    // url get-запроса в SAP через сервер
-    static String url;
+    // id запроса к серверу с данными
+    static String dataSetID;
+    // requestUrl get-запроса в SAP через сервер
+    static String requestUrl;
     // хранилище для ip сервера
     MyPropertiesHolder propertiesHolder;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_connection);
+        getConnection();
+    }
+
+    // удаление впереди идущих 0
+    public static String replaceLeftLeadingZeros(String expression) {
+        return expression.replaceFirst("^0+(?!$)", "");
+    }
 
     // дессерилазция json response
     public static ArrayList<Mapa> deserialization(JSONArray response) {
         return (new Gson()).fromJson(response.toString(),
                 new TypeToken<ArrayList<Mapa>>() {
                 }.getType());
+    }
+
+    //считываем данные из syst
+    public static void readSyst(ArrayList<Mapa> sapDataList) {
+        //считываем список доступных приложений и номер клиента, передаваемый от сервера
+        for (int i = 0; i < sapDataList.size(); i++) {
+            if (sapDataList.get(i).getName().equals("REPI2")) {
+                ClientActivity.modulesList = sapDataList.get(i).getValues();
+                ClientActivity.modulesList = sapDataList.get(i).getValues();
+            }
+            if (sapDataList.get(i).getName().equals("clientNumber")) {
+                ClientActivity.clientID = sapDataList.get(i).getValues().get(0);
+
+            }
+            if (sapDataList.get(i).getName().equals("CPROG")) {
+                ClientActivity.moduleIDlist = sapDataList.get(i).getValues();
+            }
+            //TODO
+        }
     }
 
     // вводим IP сервера через клиентский интерфейс
@@ -108,8 +146,7 @@ public class ClientActivity extends AppCompatActivity {
 
         try {
             if (propertiesHolder != null) {
-                ipServer = propertiesHolder.getProperty("ip1");
-
+                ipServer = propertiesHolder.getProperty();
                 try {
                     propertiesHolder.commit();
                 } catch (IOException e) {
@@ -148,7 +185,7 @@ public class ClientActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Rest response", error.toString());
+                        Log.e("ClientActivity response", error.toString());
                         setIp("Сервер не отвечает");
                     }
                 }
@@ -156,10 +193,26 @@ public class ClientActivity extends AppCompatActivity {
         connectionQueue.add(jsonArrayRequestConnection);
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_connection);
-        getConnection();
+    // получем id выбранного модуля
+    public static String getSelectedModuleID() {
+        String selectedApp = "";
+        int index = 999;
+        for (int i = 0; i < ClientActivity.modulesList.size(); i++) {
+            if (ClientActivity.modulesList.get(i).contains(ClientActivity.selectedModule)
+                    && !ClientActivity.selectedModule.equals("")) {
+                index = i;
+            }
+        }
+        if (index != 999) {
+            selectedApp = ClientActivity.moduleIDlist.get(index).trim();
+        }
+        return selectedApp;
+    }
+
+    // добавление данных в список запросов
+    public static void putDataSet(LinkedHashMap<String, LinkedList<String>> map) {
+        DataSet dataSet = new DataSet();
+        dataSet.setMap(map);
+        ClientActivity.dataSetList.put(ClientActivity.dataSetID, dataSet);
     }
 }

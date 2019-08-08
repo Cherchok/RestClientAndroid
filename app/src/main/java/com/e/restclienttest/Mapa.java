@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.LinkedList;
 
-
+@SuppressWarnings("unused")
 // класс для десерелизации Map из сервера
 public class Mapa {
 
@@ -14,16 +14,17 @@ public class Mapa {
     @SerializedName("values")
     private LinkedList<String> values;
 
-    public Mapa(){}
+    public Mapa() {
+    }
 
-    public Mapa(String name, LinkedList<String> values){
+    public Mapa(String name, LinkedList<String> values) {
         this.name = name;
         this.values = values;
     }
 
     @Override
     public String toString() {
-        return name +": " + values;
+        return name + ": " + values;
     }
 
     public String getName() {
@@ -34,7 +35,7 @@ public class Mapa {
         this.name = name;
     }
 
-    public LinkedList<String> getValues() {
+    LinkedList<String> getValues() {
         return values;
     }
 

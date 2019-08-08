@@ -3,13 +3,15 @@ package com.e.restclienttest;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
+
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
+@SuppressWarnings("unused")
 public class DataSet extends AppCompatActivity {
-   private LinkedHashMap<String, LinkedList<String>> map;
-   private LinearLayout linear;
-   private View view;
+    private LinkedHashMap<String, LinkedList<String>> map;
+    private LinearLayout linear;
+    private View view;
 
     public LinkedHashMap<String, LinkedList<String>> getMap() {
         return map;
@@ -44,6 +46,5 @@ public class DataSet extends AppCompatActivity {
             }
 
         }
-
     }
 }

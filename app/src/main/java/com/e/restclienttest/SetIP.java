@@ -15,6 +15,13 @@ public class SetIP extends AppCompatActivity {
     static String ip;
     MyPropertiesHolder propHolder;
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_setip);
+        retriveIP();
+    }
+
     // извлекаем введенный вручную IP
     private void retriveIP() {
         final EditText etIP = findViewById(R.id.etIP);
@@ -29,7 +36,7 @@ public class SetIP extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                propHolder.setProperty("ip1", ip);
+                propHolder.setProperty(ip);
 
                 try {
                     propHolder.commit();
@@ -41,10 +48,5 @@ public class SetIP extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setip);
-        retriveIP();
-    }
+
 }

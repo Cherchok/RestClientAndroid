@@ -31,6 +31,7 @@
         <activity android:name=".QRscanActivity"/>
         <activity android:name=".SystemsActivity"/>
         <activity android:name=".SetIP"/>
+        <activity android:name=".DataSet"/>
 
     </application>
 

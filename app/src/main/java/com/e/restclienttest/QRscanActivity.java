@@ -59,7 +59,7 @@ public class QRscanActivity extends AppCompatActivity {
 
     public void sendQR() {
 
-        // составляем url с параметрами идентификации(применим после настройки сервера)
+        // составляем requestUrl с параметрами идентификации(применим после настройки сервера)
         StringBuilder urlSB = new StringBuilder();
 
         // для считывания кириллицы необходимо произвести перекодировку
@@ -75,7 +75,7 @@ public class QRscanActivity extends AppCompatActivity {
                 .append("/").append(where).append("/").append(order).append("/").append(group)
                 .append("/").append(fieldNames);
 
-        // получаем готвый url с внесенными параметрами
+        // получаем готвый requestUrl с внесенными параметрами
         url = urlSB.toString();
 
         // GET запрос к серверу

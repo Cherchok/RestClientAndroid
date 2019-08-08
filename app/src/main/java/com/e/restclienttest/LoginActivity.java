@@ -20,28 +20,14 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 
-
 // класс проверки логина и пароля перед входом
 public class LoginActivity extends AppCompatActivity {
-    static String urlAuth;
 
-    //считываем данные из syst
-    private void readSyst(ArrayList<Mapa> sapDataList) {
-        //считываем список доступных приложений и номер клиента, передаваемый от сервера
-        for (int i = 0; i < sapDataList.size(); i++) {
-            if (sapDataList.get(i).getName().equals("REPI2")) {
-                ClientActivity.modulesList = sapDataList.get(i).getValues();
-                ClientActivity.modulesList = sapDataList.get(i).getValues();
-            }
-            if (sapDataList.get(i).getName().equals("clientNumber")) {
-                ClientActivity.clientID = sapDataList.get(i).getValues().get(0);
-
-            }
-            if (sapDataList.get(i).getName().equals("CPROG")) {
-                ClientActivity.moduleIDlist = sapDataList.get(i).getValues();
-            }
-            //TODO
-        }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        getAuthentification();
     }
 
     // входим в систему
@@ -59,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
                 ClientActivity.password = etPassword.getText().toString().trim();
                 ClientActivity.language = lang.getText().toString().toUpperCase().trim();
                 final Intent intentLogin = new Intent(LoginActivity.this, ModulesActivity.class);
-                urlAuth = "http://" + ClientActivity.ipServer + "/rest/rest/wmap" + "/" + ClientActivity.selectedSystem + "/"
+                 String urlAuth = "http://" + ClientActivity.ipServer + "/rest/rest/wmap" + "/" + ClientActivity.selectedSystem + "/"
                         + ClientActivity.username + "/" + ClientActivity.password + "/" + ClientActivity.language;
 
                 // GET запрос к серверу для авторизации
@@ -71,14 +57,14 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(JSONArray response) {
                                 ArrayList<Mapa> sapDataList = ClientActivity.deserialization(response);
-                                readSyst(sapDataList);
+                                ClientActivity.readSyst(sapDataList);
                                 LoginActivity.this.startActivity(intentLogin);
                             }
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.e("Rest response", error.toString());
+                                Log.e("LoginActivity response", error.toString());
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                                 builder.setMessage("Неверный логин или пароль пользователя")
                                         .setNegativeButton("Retry", null)
@@ -93,10 +79,4 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        getAuthentification();
-    }
 }

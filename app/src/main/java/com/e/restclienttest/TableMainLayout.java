@@ -234,11 +234,6 @@ public class TableMainLayout extends RelativeLayout {
     // generate table row of table C and table D
     private void generateTableC_AndTable_D() {
 
-//        // just seeing some header cell width
-//        for (int x = 0; x < this.headerCellsWidth.length; x++) {
-//            Log.v("TableMainLayout.java", this.headerCellsWidth[x] + "");
-//        }
-
         for (String name : datamap.keySet()) {
             if (headers[0].equals(name)) {
                 for (int columnNum2 = 0; columnNum2 < datamap.get(name).size(); columnNum2++) {
