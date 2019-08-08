@@ -1,8 +1,8 @@
 package com.e.restclienttest;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -35,124 +35,65 @@ import java.net.URLEncoder;
 import java.util.Arrays;
 
 public class QRscanActivity extends AppCompatActivity {
+
+    // параметры для работы с камерой и QR кодом
     SurfaceView cameraPreview;
     TextView textResult;
     BarcodeDetector barcodeDetector;
     CameraSource cameraSource;
+    final int RequestCameraPermissionID = 1001;
 
-    String where;
-    String table = "QR&1";
+    //параметры для передачи в SAP для обработки QR кода
+    String table = "QR&" + ClientActivity.selectedModuleID;
     String fieldsQuan = "1";
-    String language;
     String order = "~~~";
     String group = "~~~";
     String fieldNames = "~~~";
-    String url;
-    // параметры клиента
-    String systemAddress;
-    String login;
-    String password;
-    String number;
-    String ip;
 
-    final int RequestCamerPermissinID = 1001;
+    // таймер для текста о действиях клиента при работе с QR кодом
+    CountDownTimer timer = new CountDownTimer(3000, 1000) {
 
-    public void sendQR() {
+        @Override
+        public void onTick(long millisUntilFinished) {
 
-        // составляем requestUrl с параметрами идентификации(применим после настройки сервера)
-        StringBuilder urlSB = new StringBuilder();
-
-        // для считывания кириллицы необходимо произвести перекодировку
-        String st = where;
-        try {
-            where = URLEncoder.encode(st, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         }
-        urlSB.append("http://").append(ip).append("/rest/rest/wmap").append("/").append(systemAddress)
-                .append("/").append(login).append("/").append(password).append("/").append(number)
-                .append("/").append(table).append("/").append(fieldsQuan).append("/").append(language)
-                .append("/").append(where).append("/").append(order).append("/").append(group)
-                .append("/").append(fieldNames);
 
-        // получаем готвый requestUrl с внесенными параметрами
-        url = urlSB.toString();
-
-        // GET запрос к серверу
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                url,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        textResult.setText("QR передан успешно");
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Rest response", error.toString());
-                        textResult.setText("Ошибка при передаче");
-                    }
-                }
-        );
-
-        requestQueue.add(jsonArrayRequest);
-        if (!(jsonArrayRequest.getUrl() == null)) {
-            CountDownTimer timer = new CountDownTimer(3000, 1000) {
-
-                @Override
-                public void onTick(long millisUntilFinished) {
-
-                }
-
-                @Override
-                public void onFinish() {
-                    try {
-                        textResult.setText("Please focus camera to QR code");
-                    } catch (Exception e) {
-                        Log.e("Error", "Error: " + e.toString());
-                    }
-                }
-            }.start();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case RequestCamerPermissinID: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-
-                        return;
-                    }
-                    try {
-                        cameraSource.start(cameraPreview.getHolder());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+        @SuppressLint("SetTextI18n")
+        @Override
+        public void onFinish() {
+            try {
+                textResult.setText("Please focus camera to QR code");
+            } catch (Exception e) {
+                Log.e("Error", "Error: " + e.toString());
             }
-            break;
         }
-    }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_qr);
+        qrScan();
+    }
 
-        Intent intentMain = getIntent();
-        login = intentMain.getStringExtra("userName");
-        password = intentMain.getStringExtra("password");
-        language = intentMain.getStringExtra("language");
-        systemAddress = intentMain.getStringExtra("systemAddress");
-        number = intentMain.getStringExtra("clientNumber");
-        ip = intentMain.getStringExtra("ipServer");
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == RequestCameraPermissionID) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                try {
+                    cameraSource.start(cameraPreview.getHolder());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
+    // сканироваине QR кода и работа с камерой
+    private void qrScan() {
         cameraPreview = findViewById(R.id.cameraPreview);
         textResult = findViewById(R.id.txtResult);
         barcodeDetector = new BarcodeDetector.Builder(this)
@@ -172,7 +113,7 @@ public class QRscanActivity extends AppCompatActivity {
                     // Request permission
                     ActivityCompat.requestPermissions(QRscanActivity.this,
                             new String[]{Manifest.permission.CAMERA},
-                            RequestCamerPermissinID);
+                            RequestCameraPermissionID);
                     return;
                 }
                 try {
@@ -207,20 +148,56 @@ public class QRscanActivity extends AppCompatActivity {
                     textResult.post(new Runnable() {
                         @Override
                         public void run() {
-                            //Create vibrate
+                            // включение вибратора при считывании QR кода
                             Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                            assert vibrator != null;
                             vibrator.vibrate(300);
                             textResult.setText(qrcodes.valueAt(0).displayValue);
-                            where = qrData(qrcodes);
-                            sendQR();
+                            qrToString(qrcodes);
+                            qrResponse();
                         }
                     });
                 }
             }
         });
+
     }
 
-    private String qrData(SparseArray<Barcode> qrcodes) {
+    // отправка REST запроса  - получение ответа
+    public void qrResponse() {
+
+        setQrUrl();
+
+        // GET запрос к серверу
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                ClientActivity.qrUrl,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        textResult.setText("QR передан успешно");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Rest response", error.toString());
+                        textResult.setText("Ошибка при передаче");
+                    }
+                }
+        );
+
+        requestQueue.add(jsonArrayRequest);
+        if (!(jsonArrayRequest.getUrl() == null)) {
+            timer.start();
+        }
+    }
+
+    // преобразование данных QR кода в строку
+    private void qrToString(SparseArray<Barcode> qrcodes) {
         String infoForSending;
         String info;
         if (qrcodes.valueAt(0).contactInfo != null) {
@@ -239,6 +216,23 @@ public class QRscanActivity extends AppCompatActivity {
                 .replaceAll("\\r", "~~&")
                 .replaceAll("\\n", "~~`")
                 .replaceAll(" ", "~~&");
-        return infoForSending;
+
+        try {
+            ClientActivity.qrText = URLEncoder.encode(infoForSending, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
+
+    // составление url запроса
+    private void setQrUrl() {
+        // получаем готвый qrUrl с внесенными параметрами
+        ClientActivity.qrUrl = "http://" + ClientActivity.ipServer + "/rest/rest/wmap" + "/" + ClientActivity.selectedSystem +
+                "/" + ClientActivity.username + "/" + ClientActivity.password + "/" + ClientActivity.clientID +
+                "/" + table + "/" + fieldsQuan + "/" + ClientActivity.language +
+                "/" + ClientActivity.qrText + "/" + order + "/" + group +
+                "/" + fieldNames;
+    }
+
+    //
 }

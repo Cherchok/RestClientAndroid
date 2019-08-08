@@ -57,6 +57,10 @@ public class ClientActivity extends AppCompatActivity {
     static String dataSetID;
     // requestUrl get-запроса в SAP через сервер
     static String requestUrl;
+    // QR текст
+    static String qrText;
+    // QR url
+    static String qrUrl;
     // хранилище для ip сервера
     MyPropertiesHolder propertiesHolder;
 
@@ -137,7 +141,8 @@ public class ClientActivity extends AppCompatActivity {
     // подключаемся к серверу и получем список доступных систем
     private void getConnection() {
         try {
-            propertiesHolder = new MyPropertiesHolder(this, "test.properties", MyPropertiesHolder.MODE_UPDATE);
+            propertiesHolder = new MyPropertiesHolder(this, "test.properties",
+                    MyPropertiesHolder.MODE_UPDATE);
 
 
         } catch (IOException e) {
@@ -160,11 +165,8 @@ public class ClientActivity extends AppCompatActivity {
         }
 
         String urlConnection = "http://" + ipServer + "/rest/rest/wmap/connection";
-
         final RequestQueue connectionQueue = Volley.newRequestQueue(this);
         final Intent intentConnection = new Intent(ClientActivity.this, SystemsActivity.class);
-//        intentConnection.putExtra("ipServer", ipServer);
-
         final JsonArrayRequest jsonArrayRequestConnection = new JsonArrayRequest(
                 Request.Method.GET,
                 urlConnection,
@@ -176,7 +178,6 @@ public class ClientActivity extends AppCompatActivity {
                                 new TypeToken<ArrayList<Mapa>>() {
                                 }.getType());
                         for (int i = 0; i < sapDataList.size(); i++) {
-                            intentConnection.putExtra(sapDataList.get(i).getName(), sapDataList.get(i).getValues());
                             systemsList.put(sapDataList.get(i).getName(), sapDataList.get(i).getValues());
                         }
                         ClientActivity.this.startActivity(intentConnection);
