@@ -3,7 +3,6 @@ package com.e.restclienttest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.HorizontalScrollView;
@@ -15,80 +14,48 @@ import android.widget.TextView;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.List;
 
+
+@SuppressLint("ViewConstructor")
 public class TableMainLayout extends RelativeLayout {
-
-    public final String TAG = "TableMainLayout.java";
-
+    // список заголовков таблицы
     String[] headers;
+    // список данных для заполнения таблицы
     LinkedHashMap<String, LinkedList<String>> datamap;
-
+    // статическая таблица для заголовка A
     TableLayout tableA;
+    // динамическая таблица для заголовков B
     TableLayout tableB;
+    // статическая таблица для значений C
     TableLayout tableC;
+    // динамическая таблица для значений D
     TableLayout tableD;
-
+    // горизонтальная прокрутка для таблицы В
     HorizontalScrollView horizontalScrollViewB;
+    // горизонтальная прокрутка для таблицы D
     HorizontalScrollView horizontalScrollViewD;
-
+    // вертикальная прокрутка для таблицы С
     ScrollView scrollViewC;
+    // вертикальная прокрутка для таблицы D
     ScrollView scrollViewD;
-
+    // контекст
     Context context;
 
-    List<LinkedList<String>> tableObjects;
-
+//    List<LinkedList<String>> tableObjects;
+    // ширина заголовков
     int[] headerCellsWidth;
 
+    // конструктор передачи SAP данных
     public TableMainLayout(Context context, LinkedHashMap<String, LinkedList<String>> dataMap) {
-
         super(context);
-        this.context = context;
-        LinkedHashMap<String, LinkedList<String>> tableMap = new LinkedHashMap<>();
-        for (String name : dataMap.keySet()) {
-            boolean flag = true;
-            if (name.equals("columnLeng")) {
-                flag = false;
-            }
-            if (name.equals("fieldName")) {
-                flag = false;
-            }
-            if (name.equals("dataType")) {
-                flag = false;
-            }
-            if (name.equals("repText")) {
-                flag = false;
-            }
-            if (name.equals("domName")) {
-                flag = false;
-            }
-            if (name.equals("outputLen")) {
-                flag = false;
-            }
-            if (name.equals("decimals")) {
-                flag = false;
-            }
-            if (name.equals("clientNumber")) {
-                flag = false;
-            }
-            if (flag) {
-                tableMap.put(name, dataMap.get(name));
-            }
-        }
-        dataMap = null;
-        this.datamap = tableMap;
-        tableMap = null;
-        this.headers = new String[datamap.keySet().size()];
-        int i = 0;
-        for (String name : datamap.keySet()) {
-            headers[i] = name;
-            i++;
-        }
-        headerCellsWidth = new int[headers.length];
-        tableObjects = this.fillTable();
 
-        // initialize the main components (TableLayouts, HorizontalScrollView, ScrollView)
+        this.context = context;
+        setTableData(dataMap);
+        setHeaders();
+
+//        tableObjects = this.fillTable();
+
+        // инициализация основных компонентов (TableLayouts, HorizontalScrollView, ScrollView)
         this.initComponents();
         this.setComponentsId();
         this.setScrollViewAndHorizontalScrollViewTag();
@@ -120,19 +87,66 @@ public class TableMainLayout extends RelativeLayout {
         this.resizeBodyTableRowHeight();
     }
 
-    // this is just the sample data
-    List<LinkedList<String>> fillTable() {
-
-        List<LinkedList<String>> headersData = new LinkedList<>();
-
-        for (String name : datamap.keySet()) {
-            LinkedList<String> headerData = datamap.get(name);
-            headersData.add(headerData);
+    // заполнение списка значениями
+    private void setTableData(LinkedHashMap<String, LinkedList<String>> dataMap) {
+        LinkedHashMap<String, LinkedList<String>> tableMap = new LinkedHashMap<>();
+        for (String name : dataMap.keySet()) {
+            boolean flag = true;
+            if (name.equals("columnLeng")) {
+                flag = false;
+            }
+            if (name.equals("fieldName")) {
+                flag = false;
+            }
+            if (name.equals("dataType")) {
+                flag = false;
+            }
+            if (name.equals("repText")) {
+                flag = false;
+            }
+            if (name.equals("domName")) {
+                flag = false;
+            }
+            if (name.equals("outputLen")) {
+                flag = false;
+            }
+            if (name.equals("decimals")) {
+                flag = false;
+            }
+            if (name.equals("clientNumber")) {
+                flag = false;
+            }
+            if (flag) {
+                tableMap.put(name, dataMap.get(name));
+            }
         }
-        return headersData;
+        this.datamap = tableMap;
     }
 
-    // initalized components
+    // заполнение списка заголовками
+    private void setHeaders() {
+        this.headers = new String[datamap.keySet().size()];
+        int i = 0;
+        for (String name : datamap.keySet()) {
+            headers[i] = name;
+            i++;
+        }
+        this.headerCellsWidth = new int[headers.length];
+    }
+
+//    // this is just the sample data
+//    List<LinkedList<String>> fillTable() {
+//
+//        List<LinkedList<String>> headersData = new LinkedList<>();
+//
+//        for (String name : datamap.keySet()) {
+//            LinkedList<String> headerData = datamap.get(name);
+//            headersData.add(headerData);
+//        }
+//        return headersData;
+//    }
+
+    // инициализация компонентов
     private void initComponents() {
 
         this.tableA = new TableLayout(this.context);
@@ -151,7 +165,7 @@ public class TableMainLayout extends RelativeLayout {
 
     }
 
-    // set essential component IDs
+    // установка основных идентификаторов компонентов
     @SuppressLint("ResourceType")
     private void setComponentsId() {
         this.tableA.setId(1);

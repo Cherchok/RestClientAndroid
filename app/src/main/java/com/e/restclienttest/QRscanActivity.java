@@ -164,7 +164,7 @@ public class QRscanActivity extends AppCompatActivity {
     }
 
     // отправка REST запроса  - получение ответа
-    public void qrResponse() {
+    private void qrResponse() {
 
         setQrUrl();
 
