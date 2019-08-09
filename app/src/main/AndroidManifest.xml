@@ -24,14 +24,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity"/>
-        <activity android:name=".ParamsActivity"/>
-        <activity android:name=".ModulesActivity"/>
-        <activity android:name=".QRscanActivity"/>
-        <activity android:name=".SystemsActivity"/>
-        <activity android:name=".SetIP"/>
-        <activity android:name=".DataSet"/>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/tableName" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/authorization" />
+        />
+        <activity
+            android:name=".ParamsActivity"
+            android:label="@string/params" />
+        <activity
+            android:name=".ModulesActivity"
+            android:label="@string/modules" />
+        <activity
+            android:name=".QRscanActivity"
+            android:label="@string/scanner" />
+        <activity android:name=".SystemsActivity" />
+        <activity
+            android:name=".SetIP"
+            android:label="@string/settings" />
+        <activity android:name=".DataSet" />
 
     </application>
 

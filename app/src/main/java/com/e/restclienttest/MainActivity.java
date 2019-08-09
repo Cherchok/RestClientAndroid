@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         startRequest();
+        MainActivity.this.setTitle("Таблица : " + table);
     }
 
     // кидает запрос серверу и получает ответ заполненный метод который заполняется данными из ответа
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // составление url запроса
-    private void setRequestUrl(){
+    private void setRequestUrl() {
         // получаем готвый requestUrl с внесенными параметрами
         ClientActivity.requestUrl = "http://" + ClientActivity.ipServer + "/rest/rest/wmap" + "/" +
                 ClientActivity.selectedSystem + "/" + ClientActivity.username + "/" +
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // составление ключа запроса
-    private void setDataSetID(){
+    private void setDataSetID() {
         // формирование ключа запрса
         ClientActivity.dataSetID = table + fieldsQuan + language + where + order + group + fieldNames;
     }

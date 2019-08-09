@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">SAP JAVA</string>
+    <string name="authorization">Авторизация</string>
+    <string name="params">Параметры поиска таблицы</string>
+    <string name="modules">Список приложений</string>
+    <string name="settings">Настройки</string>
+    <string name="scanner">QR Сканнер</string>
+    <string name="tableName">Таблица</string>
     <string name="add_edittext">Add edittext</string>
     <string name="result_text_default">Please focus camera to QR code</string>
     <string name="select_module">Select module:</string>
