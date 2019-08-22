@@ -1,8 +1,8 @@
 package com.e.restclienttest;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +22,23 @@ import java.util.ArrayList;
 
 // класс проверки логина и пароля перед входом
 public class LoginActivity extends AppCompatActivity {
+
+    CountDownTimer timer = new CountDownTimer(3000, 1000) {
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+
+        }
+
+        @Override
+        public void onFinish() {
+            try {
+                LoginActivity.this.setTitle("Авторизация");
+            } catch (Exception e) {
+                Log.e("Error", "Error: " + e.toString());
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +81,8 @@ public class LoginActivity extends AppCompatActivity {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.e("LoginActivity response", error.toString());
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("Неверный логин или пароль пользователя")
-                                        .setNegativeButton("Retry", null)
-                                        .create()
-                                        .show();
+                                LoginActivity.this.setTitle("Неверный логин или пароль!!!");
+                                timer.start();
                             }
                         }
                 );
