@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -47,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
         getAuthentification();
     }
 
+
+
     // входим в систему
     private void getAuthentification() {
         final EditText etUsername = findViewById(R.id.etUsername);
@@ -54,15 +57,17 @@ public class LoginActivity extends AppCompatActivity {
         final EditText lang = findViewById(R.id.language);
         final Button bLogin = findViewById(R.id.bEnter);
         final RequestQueue loginQueue = Volley.newRequestQueue(this);
+        final ProgressBar loginPB = findViewById(R.id.progressBarLogin);
 
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loginPB.setVisibility(View.VISIBLE);
                 ClientActivity.username = etUsername.getText().toString().toUpperCase().trim();
                 ClientActivity.password = etPassword.getText().toString().trim();
                 ClientActivity.language = lang.getText().toString().toUpperCase().trim();
                 final Intent intentLogin = new Intent(LoginActivity.this, ModulesActivity.class);
-                 String urlAuth = "http://" + ClientActivity.ipServer + "/rest/rest/wmap" + "/" + ClientActivity.selectedSystem + "/"
+                 String urlAuth = "https://" + ClientActivity.ipServer + "/rest/rest/wmap" + "/" + ClientActivity.selectedSystem + "/"
                         + ClientActivity.username + "/" + ClientActivity.password + "/" + ClientActivity.language;
 
                 // GET запрос к серверу для авторизации

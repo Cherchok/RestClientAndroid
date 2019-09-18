@@ -162,7 +162,8 @@ public class ClientActivity extends AppCompatActivity {
             ipServer = " ";
         }
 
-        String urlConnection = "http://" + ipServer + "/rest/rest/wmap/connection";
+        HttpsTrustManager.allowAllSSL();
+        String urlConnection = "https://" + ipServer + "/rest/rest/wmap/connection";
         final RequestQueue connectionQueue = Volley.newRequestQueue(this);
         final Intent intentConnection = new Intent(ClientActivity.this, SystemsActivity.class);
         final JsonArrayRequest jsonArrayRequestConnection = new JsonArrayRequest(
@@ -172,9 +173,7 @@ public class ClientActivity extends AppCompatActivity {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        ArrayList<Mapa> sapDataList = (new Gson()).fromJson(response.toString(),
-                                new TypeToken<ArrayList<Mapa>>() {
-                                }.getType());
+                        ArrayList<Mapa> sapDataList = deserialization(response);
                         for (int i = 0; i < sapDataList.size(); i++) {
                             systemsList.put(sapDataList.get(i).getName(), sapDataList.get(i).getValues());
                         }
@@ -189,6 +188,7 @@ public class ClientActivity extends AppCompatActivity {
                     }
                 }
         );
+
         connectionQueue.add(jsonArrayRequestConnection);
     }
 

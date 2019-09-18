@@ -25,4 +25,6 @@
     <string name="fields_names">Fields names</string>
     <string name="connect">Connect</string>
     <string name="enter_ip">Enter IP</string>
+    <string name="getconnection">getconnection</string>
+    <string name="connection">Connection</string>
 </resources>

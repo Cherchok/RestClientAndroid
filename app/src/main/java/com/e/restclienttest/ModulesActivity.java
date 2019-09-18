@@ -28,6 +28,12 @@ public class ModulesActivity extends AppCompatActivity {
         startSelectedModule();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
+
     // заполняем список модулей доступных в SAP системе
     public void setModulesNames() {
         modules = new String[ClientActivity.modulesList.size() - 1];
@@ -51,26 +57,10 @@ public class ModulesActivity extends AppCompatActivity {
             switch (selectedAppID) {
                 case "A":
                     final Intent intentTab = new Intent(ModulesActivity.this, ParamsActivity.class);
-
-//                    intentTab.putExtra("userName", ClientActivity.username);
-//                    intentTab.putExtra("password", ClientActivity.password);
-//                    intentTab.putExtra("language", ClientActivity.language);
-//                    intentTab.putExtra("module", ClientActivity.selectedModule);
-//                    intentTab.putExtra("systemAddress", ClientActivity.selectedSystem);
-//                    intentTab.putExtra("clientNumber", ClientActivity.clientID);
-//                    intentTab.putExtra("ipServer", ClientActivity.ipServer);
                     ModulesActivity.this.startActivity(intentTab);
                     break;
                 case "Z":
                     final Intent intentQR = new Intent(ModulesActivity.this, QRscanActivity.class);
-
-//                    intentQR.putExtra("userName", ClientActivity.username);
-//                    intentQR.putExtra("password", ClientActivity.password);
-//                    intentQR.putExtra("language", ClientActivity.language);
-//                    intentQR.putExtra("module", ClientActivity.selectedModule);
-//                    intentQR.putExtra("systemAddress", ClientActivity.selectedSystem);
-//                    intentQR.putExtra("clientNumber", ClientActivity.clientID);
-//                    intentQR.putExtra("ipServer", ClientActivity.ipServer);
                     ModulesActivity.this.startActivity(intentQR);
                     break;
             }

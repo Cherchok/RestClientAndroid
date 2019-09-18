@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     // составление url запроса
     private void setRequestUrl() {
         // получаем готвый requestUrl с внесенными параметрами
-        ClientActivity.requestUrl = "http://" + ClientActivity.ipServer + "/rest/rest/wmap" + "/" +
+        ClientActivity.requestUrl = "https://" + ClientActivity.ipServer + "/rest/rest/wmap" + "/" +
                 ClientActivity.selectedSystem + "/" + ClientActivity.username + "/" +
                 ClientActivity.password + "/" + ClientActivity.clientID + "/" + table + "/" +
                 fieldsQuan + "/" + language + "/" + where + "/" + order + "/" + group + "/" +
