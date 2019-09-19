@@ -1,6 +1,7 @@
 package com.e.restclienttest;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,30 @@ public class SystemsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_systems);
         SelectSystem();
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(SystemsActivity.this);
+
+        builder.setMessage("Хотите переподключиться к серверу ?")
+                .setNegativeButton("Да", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intentSetIP = new Intent(SystemsActivity.this, ClientActivity.class);
+                        SystemsActivity.this.startActivity(intentSetIP);
+                    }
+                })
+                .setNeutralButton("Нет", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intentSetIP = new Intent(SystemsActivity.this, SystemsActivity.class);
+                        SystemsActivity.this.startActivity(intentSetIP);
+                    }
+                })
+                .create()
+                .show();
+
     }
 
     // получение списка доступных имен систем SAP

@@ -48,7 +48,11 @@ public class LoginActivity extends AppCompatActivity {
         getAuthentification();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        Intent intentSystems = new Intent(LoginActivity.this, SystemsActivity.class);
+        LoginActivity.this.startActivity(intentSystems);
+    }
 
     // входим в систему
     private void getAuthentification() {

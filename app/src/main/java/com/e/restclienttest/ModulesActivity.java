@@ -1,6 +1,8 @@
 package com.e.restclienttest;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +32,25 @@ public class ModulesActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        AlertDialog.Builder builder = new AlertDialog.Builder(ModulesActivity.this);
+
+        builder.setMessage("Хотите сменить пользователя ?")
+                .setNegativeButton("Да", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intentSetIP = new Intent(ModulesActivity.this, LoginActivity.class);
+                        ModulesActivity.this.startActivity(intentSetIP);
+                    }
+                })
+                .setNeutralButton("Нет", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intentSetIP = new Intent(ModulesActivity.this, ModulesActivity.class);
+                        ModulesActivity.this.startActivity(intentSetIP);
+                    }
+                })
+                .create()
+                .show();
 
     }
 

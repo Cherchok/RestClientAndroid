@@ -1,6 +1,8 @@
 package com.e.restclienttest;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 
-public class MainActivity extends AppCompatActivity {
+public class DataActivity extends AppCompatActivity {
 
     // параметры для запроса в SAP
     String table;
@@ -39,7 +41,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         startRequest();
-        MainActivity.this.setTitle("Таблица : " + table);
+        DataActivity.this.setTitle("Таблица : " + table);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     // кидает запрос серверу и получает ответ заполненный метод который заполняется данными из ответа
@@ -86,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
     // вывод таблицы на экран
     private void showTable() {
-        TableMainLayout tab = new TableMainLayout(MainActivity.this,
+        TableMainLayout tab = new TableMainLayout(DataActivity.this,
                 ClientActivity.dataSetList.get(ClientActivity.dataSetID).getMap());
         setContentView(tab);
     }

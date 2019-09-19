@@ -27,6 +27,12 @@ public class ParamsActivity extends AppCompatActivity {
         startResponse();
     }
 
+    @Override
+    public void onBackPressed() {
+       Intent intentModules = new Intent(ParamsActivity.this, ModulesActivity.class);
+       ParamsActivity.this.startActivity(intentModules);
+    }
+
     // метод получения запроса
     private void startResponse() {
         etTable = findViewById(R.id.etTable);
@@ -75,7 +81,7 @@ public class ParamsActivity extends AppCompatActivity {
 
 
         // заполняем параметрами мапу, которая передаст их основному классу исполнения
-        Intent intentParams = new Intent(ParamsActivity.this, MainActivity.class);
+        Intent intentParams = new Intent(ParamsActivity.this, DataActivity.class);
         for (String name : chekMap.keySet()) {
             if (!chekMap.get(name).equals("")) {
                 intentParams.putExtra(name, chekMap.get(name));
