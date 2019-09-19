@@ -39,6 +39,7 @@ public class DataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         startRequest();
         DataActivity.this.setTitle("Таблица : " + table);
+
     }
 
     @Override
