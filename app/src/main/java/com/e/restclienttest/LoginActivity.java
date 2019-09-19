@@ -90,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                loginPB.setVisibility(View.INVISIBLE);
                                 LoginActivity.this.setTitle("Неверный логин или пароль!!!");
                                 timer.start();
                             }
