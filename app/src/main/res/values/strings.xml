@@ -27,4 +27,10 @@
     <string name="enter_ip">Введите IP адрес и порт</string>
     <string name="getconnection">Получить соединение</string>
     <string name="connection">Соединение</string>
+    <string name="home">Home</string>
+    <string name="setting">Setting</string>
+    <string name="contact">Contact</string>
+    <string name="exit">exit</string>
+    <string name="share">share</string>
+    <string name="system">System</string>
 </resources>

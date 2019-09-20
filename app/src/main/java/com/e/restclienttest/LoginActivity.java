@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +27,8 @@ import java.util.ArrayList;
 // класс проверки логина и пароля перед входом
 public class LoginActivity extends AppCompatActivity {
 
+    // в случае если логин или пароль введены неверно, появляется сообщение об этом продолжительностью
+    // 3 секунды
     CountDownTimer timer = new CountDownTimer(3000, 1000) {
 
         @Override
@@ -54,6 +59,27 @@ public class LoginActivity extends AppCompatActivity {
         LoginActivity.this.startActivity(intentSystems);
     }
 
+    // добавление кнопки меню на activity
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    // обработка команд кнопки меню
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menu_system) {
+            MenuActions.systemButton(LoginActivity.this);
+        }
+        if (id == R.id.menu_settings) {
+            MenuActions.settings(LoginActivity.this);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     // входим в систему
     private void getAuthentification() {
         final EditText etUsername = findViewById(R.id.etUsername);
@@ -71,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                 ClientActivity.password = etPassword.getText().toString().trim();
                 ClientActivity.language = lang.getText().toString().toUpperCase().trim();
                 final Intent intentLogin = new Intent(LoginActivity.this, ModulesActivity.class);
-                 String urlAuth = "https://" + ClientActivity.ipServer + "/rest/rest/wmap" + "/" + ClientActivity.selectedSystem + "/"
+                String urlAuth = "https://" + ClientActivity.ipServer + "/rest/rest/wmap" + "/" + ClientActivity.selectedSystem + "/"
                         + ClientActivity.username + "/" + ClientActivity.password + "/" + ClientActivity.language;
 
                 // GET запрос к серверу для авторизации
