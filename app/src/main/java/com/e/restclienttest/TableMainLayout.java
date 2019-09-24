@@ -15,7 +15,6 @@ import android.widget.TextView;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
-
 @SuppressLint("ViewConstructor")
 public class TableMainLayout extends RelativeLayout {
     // список заголовков таблицы

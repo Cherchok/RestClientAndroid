@@ -72,7 +72,7 @@ public class DataActivity extends AppCompatActivity {
                                 }
                             }
                             ClientActivity.putDataSet(tempMap);
-                            showTable();
+                            showTableThread();
                             // TODO
                         }
                     },
@@ -94,6 +94,27 @@ public class DataActivity extends AppCompatActivity {
         TableMainLayout tab = new TableMainLayout(DataActivity.this,
                 ClientActivity.dataSetList.get(ClientActivity.dataSetID).getMap());
         setContentView(tab);
+    }
+
+    private void showTableThread() {
+        new Thread() {
+            public void run() {
+
+                try {
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            showTable();
+                        }
+                    });
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }.start();
     }
 
     // метод передачи введенных параметров выводимой таблицы

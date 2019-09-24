@@ -7,13 +7,15 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
+        android:hardwareAccelerated="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:largeHeap="true">
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
@@ -43,7 +45,7 @@
         <activity
             android:name=".SetIP"
             android:label="@string/settings" />
-        <activity android:name=".DataSet" />
+        <activity android:name=".DataSet" />z
 
     </application>
 

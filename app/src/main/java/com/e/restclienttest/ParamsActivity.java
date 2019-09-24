@@ -29,8 +29,8 @@ public class ParamsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-       Intent intentModules = new Intent(ParamsActivity.this, ModulesActivity.class);
-       ParamsActivity.this.startActivity(intentModules);
+        Intent intentModules = new Intent(ParamsActivity.this, ModulesActivity.class);
+        ParamsActivity.this.startActivity(intentModules);
     }
 
     // метод получения запроса
@@ -47,7 +47,7 @@ public class ParamsActivity extends AppCompatActivity {
         bEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fillParams();
+                fillParamsThread();
             }
         });
     }
@@ -88,5 +88,27 @@ public class ParamsActivity extends AppCompatActivity {
             } else intentParams.putExtra(name, " ");
         }
         ParamsActivity.this.startActivity(intentParams);
+    }
+
+    // поток заполнения параметров
+    private void fillParamsThread() {
+        new Thread() {
+            public void run() {
+
+                    try {
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                fillParams();
+                            }
+                        });
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+            }
+        }.start();
     }
 }
