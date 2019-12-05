@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                 ClientActivity.password = etPassword.getText().toString().trim();
                 ClientActivity.language = lang.getText().toString().toUpperCase().trim();
                 final Intent intentLogin = new Intent(LoginActivity.this, ModulesActivity.class);
-                String urlAuth = "https://" + ClientActivity.ipServer + "/rest/rest/wmap" + "/" + ClientActivity.selectedSystem + "/"
+                String urlAuth = "https://" + ClientActivity.ipServer + "/RestTest/rest/wmap" + "/" + ClientActivity.selectedSystem + "/"
                         + ClientActivity.username + "/" + ClientActivity.password + "/" + ClientActivity.language;
 
                 // GET запрос к серверу для авторизации

@@ -45,7 +45,7 @@
         <activity
             android:name=".SetIP"
             android:label="@string/settings" />
-        <activity android:name=".DataSet" />z
+        <activity android:name=".DataSet" />
 
     </application>
 

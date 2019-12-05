@@ -163,7 +163,7 @@ public class ClientActivity extends AppCompatActivity {
         }
 
         HttpsTrustManager.allowAllSSL();
-        String urlConnection = "https://" + ipServer + "/rest/rest/wmap/connection";
+        String urlConnection = "https://" + ipServer + "/RestTest/rest/wmap/connection";
         final RequestQueue connectionQueue = Volley.newRequestQueue(this);
         final Intent intentConnection = new Intent(ClientActivity.this, SystemsActivity.class);
         final JsonArrayRequest jsonArrayRequestConnection = new JsonArrayRequest(
