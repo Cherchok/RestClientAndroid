@@ -1,5 +1,6 @@
 package com.e.restclienttest;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 
 import android.content.DialogInterface;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.CheckBox;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -61,6 +63,9 @@ public class ClientActivity extends AppCompatActivity {
     static String qrUrl;
     // хранилище для ip сервера
     MyPropertiesHolder propertiesHolder;
+    // отображение заголовка с техническими именами
+    @SuppressLint("StaticFieldLeak")
+    static CheckBox techNames;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -163,7 +168,7 @@ public class ClientActivity extends AppCompatActivity {
         }
 
         HttpsTrustManager.allowAllSSL();
-        String urlConnection = "https://" + ipServer + "/RestTest/rest/wmap/connection";
+        String urlConnection = "https://" + ipServer + "/rest/rest/wmap/connection";
         final RequestQueue connectionQueue = Volley.newRequestQueue(this);
         final Intent intentConnection = new Intent(ClientActivity.this, SystemsActivity.class);
         final JsonArrayRequest jsonArrayRequestConnection = new JsonArrayRequest(

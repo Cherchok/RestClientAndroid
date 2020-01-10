@@ -9,6 +9,7 @@
     android:paddingTop="16dp"
     tools:context=".DataActivity">
 
+
     <EditText
         android:id="@+id/etTable"
         android:layout_width="wrap_content"
@@ -97,11 +98,21 @@
         android:hint="@string/lng"
         android:inputType="textPersonName" />
 
+    <CheckBox
+        android:id="@+id/techNames"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etlng"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:text="@string/techNames"
+        android:textSize="18sp" />
+
     <Button
         android:id="@+id/bEnter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etlng"
+        android:layout_below="@+id/techNames"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
@@ -113,6 +124,7 @@
         android:layout_marginRight="16dp"
         android:text="@string/enter"
         tools:visibility="visible" />
+
 
 
 

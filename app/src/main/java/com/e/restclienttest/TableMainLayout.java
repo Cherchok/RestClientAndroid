@@ -19,6 +19,8 @@ import java.util.LinkedList;
 public class TableMainLayout extends RelativeLayout {
     // список заголовков таблицы
     String[] headers;
+    // список заголовков с пользовательскими именами
+    String[] realNamesHeaders;
     // список данных для заполнения таблицы
     LinkedHashMap<String, LinkedList<String>> datamap;
     // статическая таблица для заголовка A
@@ -41,6 +43,7 @@ public class TableMainLayout extends RelativeLayout {
     Context context;
     // ширина заголовков
     int[] headerCellsWidth;
+    LinkedList<String> realNames;
 
     // конструктор передачи SAP данных
     public TableMainLayout(Context context, LinkedHashMap<String, LinkedList<String>> dataMap) {
@@ -97,6 +100,7 @@ public class TableMainLayout extends RelativeLayout {
                 flag = false;
             }
             if (name.equals("repText")) {
+                realNames = dataMap.get(name);
                 flag = false;
             }
             if (name.equals("domName")) {
@@ -127,6 +131,14 @@ public class TableMainLayout extends RelativeLayout {
             i++;
         }
         this.headerCellsWidth = new int[headers.length];
+
+
+        this.realNamesHeaders = new String[realNames.size()];
+        i = 0;
+        for (String name : realNames) {
+            realNamesHeaders[i] = name;
+            i++;
+        }
     }
 
     // инициализация компонентов
@@ -203,7 +215,13 @@ public class TableMainLayout extends RelativeLayout {
     // заполнение ячеек таблицы A
     TableRow componentATableRow() {
         TableRow componentATableRow = new TableRow(this.context);
-        TextView textView = this.headerTextView(this.headers[0]);
+        TextView textView;
+        if (ClientActivity.techNames.isChecked()) {
+             textView = this.headerTextView(this.headers[0]);
+        }else {
+             textView = this.headerTextView(this.realNamesHeaders[0]);
+        }
+
         textView.setTextColor(Color.BLACK);
         componentATableRow.setBackgroundColor(Color.BLACK);
         componentATableRow.addView(textView);
@@ -218,9 +236,13 @@ public class TableMainLayout extends RelativeLayout {
 
         TableRow.LayoutParams params = new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         params.setMargins(2, 0, 0, 0);
-
+        TextView textView;
         for (int x = 0; x < (headerFieldCount - 1); x++) {
-            TextView textView = this.headerTextView(this.headers[x + 1]);
+            if(ClientActivity.techNames.isChecked()){
+                textView = this.headerTextView(this.headers[x + 1]);
+            }else {
+                textView = this.headerTextView(this.realNamesHeaders[x + 1]);
+            }
             textView.setLayoutParams(params);
             textView.setTextColor(Color.BLACK);
             componentBTableRow.setBackgroundColor(Color.BLACK);
@@ -249,6 +271,7 @@ public class TableMainLayout extends RelativeLayout {
             tableRowForTableD.setBackgroundColor(Color.LTGRAY);
             this.tableD.addView(tableRowForTableD);
         }
+
     }
 
     // генерирование ячеек для C
@@ -325,7 +348,7 @@ public class TableMainLayout extends RelativeLayout {
         this.matchLayoutHeight(tableRow, finalHeight);
     }
 
-    // ширина заголовков
+    // ширина столбцов с данными
     void getTableRowHeaderCellWidth() {
 
         int tableAChildCount = ((TableRow) this.tableA.getChildAt(0)).getChildCount();
@@ -335,8 +358,15 @@ public class TableMainLayout extends RelativeLayout {
 
             if (x == 0) {
                 this.headerCellsWidth[x] = this.viewWidth(((TableRow) this.tableA.getChildAt(0)).getChildAt(x));
+                if (headerCellsWidth[x] < 150){
+                    headerCellsWidth[x] = 150;
+
+                }
             } else {
                 this.headerCellsWidth[x] = this.viewWidth(((TableRow) this.tableB.getChildAt(0)).getChildAt(x - 1));
+                if (headerCellsWidth[x] < 150){
+                    headerCellsWidth[x] = 150;
+                }
             }
 
         }
@@ -420,9 +450,10 @@ public class TableMainLayout extends RelativeLayout {
         return view.getMeasuredHeight();
     }
 
-    // считывание ширины вьюх
+    // считывание ширины заголовка и определение минимальной ширины заголовка
     private int viewWidth(View view) {
         view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        view.setMinimumWidth(150);
         return view.getMeasuredWidth();
     }
 

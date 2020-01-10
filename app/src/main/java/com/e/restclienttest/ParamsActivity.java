@@ -20,6 +20,7 @@ public class ParamsActivity extends AppCompatActivity {
     EditText etFieldsNames;
     Button bEnter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +44,7 @@ public class ParamsActivity extends AppCompatActivity {
         etGroup = findViewById(R.id.group);
         etFieldsNames = findViewById(R.id.etFields_Names);
         bEnter = findViewById(R.id.bEnter);
+        ClientActivity.techNames = findViewById(R.id.techNames);
 
         bEnter.setOnClickListener(new View.OnClickListener() {
             @Override

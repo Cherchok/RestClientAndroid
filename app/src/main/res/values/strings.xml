@@ -33,4 +33,5 @@
     <string name="exit">exit</string>
     <string name="share">share</string>
     <string name="system">System</string>
+    <string name="techNames">Технические имена</string>
 </resources>

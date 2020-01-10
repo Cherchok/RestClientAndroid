@@ -227,7 +227,7 @@ public class QRscanActivity extends AppCompatActivity {
     // составление url запроса
     private void setQrUrl() {
         // получаем готвый qrUrl с внесенными параметрами
-        ClientActivity.qrUrl = "https://" + ClientActivity.ipServer + "/RestTest/rest/wmap" + "/" + ClientActivity.selectedSystem +
+        ClientActivity.qrUrl = "https://" + ClientActivity.ipServer + "/rest/rest/wmap" + "/" + ClientActivity.selectedSystem +
                 "/" + ClientActivity.username + "/" + ClientActivity.password + "/" + ClientActivity.clientID +
                 "/" + table + "/" + fieldsQuan + "/" + ClientActivity.language +
                 "/" + ClientActivity.qrText + "/" + order + "/" + group +
